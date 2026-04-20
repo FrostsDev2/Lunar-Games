@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3294172390463223" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>IXL | Dashboard</title>
-  <link rel="icon" id="favicon" href="icons/IMG_4366.png">
+  <title>Lunar Games | gn-math</title>
+  <link rel="icon" id="favicon" href="lunar.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -138,6 +137,11 @@
 
     .brand-games {
       color: var(--text);
+    }
+
+    .brand img {
+      width: 32px;
+      height: auto;
     }
 
     .header-actions {
@@ -552,12 +556,7 @@
       cursor: pointer;
       margin-top: 0.5rem;
     }
-    .setting-select:focus {
-      outline: none;
-      border-color: #a78bfa;
-    }
 
-    /* Custom scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
     }
@@ -597,12 +596,6 @@
       animation: float 3s ease-in-out infinite;
     }
 
-@keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
-    }
-
     @keyframes glow {
       0% { filter: drop-shadow(0 0 25px rgba(167, 139, 250, 0.6)); }
       100% { filter: drop-shadow(0 0 45px rgba(167, 139, 250, 1)); }
@@ -627,6 +620,92 @@
     .home-brand .brand-games {
       color: var(--text);
     }
+
+    /* V2 Welcome Popup */
+    .welcome-popup {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface-elevated) 100%);
+      border-radius: 24px;
+      padding: 2rem;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      border: 1px solid var(--primary);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      animation: popIn 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .welcome-popup img {
+      width: 80px;
+      height: auto;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.6));
+    }
+
+    .welcome-popup h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-popup .version-badge {
+      display: inline-block;
+      background: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .update-list {
+      text-align: left;
+      background: var(--bg-dark);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .update-list li {
+      list-style: none;
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .update-list li i {
+      color: #10b981;
+      width: 20px;
+    }
+
+    .welcome-btn {
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 0.85rem 2rem;
+      border-radius: 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .welcome-btn:hover {
+      background: var(--primary-light);
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
@@ -645,9 +724,13 @@
   </div>
 
   <header class="app-header">
-    <div class="brand"><img src="lunar.png" style="width: 32px; height: auto; margin-right: 8px;"><span class="brand-lunar">LUNAR</span><span class="brand-games">GAMES</span></div>
+    <div class="brand">
+      <img src="lunar.png" alt="Lunar Logo">
+      <span class="brand-lunar">LUNAR</span>
+      <span class="brand-games">GAMES</span>
+    </div>
     <div class="header-actions">
-      <button class="btn" id="stealth-btn" onclick="openStealthMode()"><i class="fas fa-user-secret"></i> Open In Stealth Mode</button>
+      <button class="btn" id="stealth-btn"><i class="fas fa-user-secret"></i> Stealth Mode</button>
       <button class="btn" id="tos-btn"><i class="fas fa-file-contract"></i> Terms</button>
       <button class="btn" id="settings-btn"><i class="fas fa-cog"></i></button>
     </div>
@@ -695,229 +778,42 @@
         <h2><i class="fas fa-cog"></i> Settings</h2>
         <button class="close-btn" id="close-settings">&times;</button>
       </div>
-      
       <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-        <!-- General Settings -->
         <div>
           <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">General</h3>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <label class="setting-row">
-              <span><i class="fas fa-heart"></i> Auto-save Favorites</span>
-              <input type="checkbox" id="auto-save-favorites" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-bell"></i> Show New Game Alerts</span>
-              <input type="checkbox" id="show-new-alerts" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-infinity"></i> Infinite Scroll</span>
-              <input type="checkbox" id="infinite-scroll" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-star"></i> Show Game Ratings</span>
-              <input type="checkbox" id="show-ratings" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-clock"></i> Show Play Time</span>
-              <input type="checkbox" id="show-playtime" checked>
-            </label>
-          </div>
-        </div>
-
-        <!-- Display Settings -->
-        <div>
-          <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Display</h3>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <label class="setting-row">
-              <span><i class="fas fa-cloud-rain"></i> Rain Background</span>
-              <input type="checkbox" id="rain-enabled" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-moon"></i> Dark Mode</span>
-              <input type="checkbox" id="dark-mode" checked disabled>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-compress"></i> Compact View</span>
-              <input type="checkbox" id="compact-view">
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-expand"></i> Fullscreen Games</span>
-              <input type="checkbox" id="fullscreen-games" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-sort-amount-up"></i> Sort Games By</span>
-              <select class="setting-select" id="sort-games">
-                <option value="title">Title</option>
-                <option value="newest">Newest</option>
-                <option value="popular">Popular</option>
-              </select>
-            </label>
-          </div>
-        </div>
-
-        <!-- Cloaking Settings -->
-        <div>
-          <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Cloaking</h3>
           <label class="setting-row">
-            <span><i class="fas fa-user-secret"></i> Enable Cloaking</span>
-            <input type="checkbox" id="cloaking-enabled">
+            <span><i class="fas fa-heart"></i> Auto-save Favorites</span>
+            <input type="checkbox" id="auto-save-favorites" checked>
           </label>
-          <select id="cloaking-mode" class="setting-select">
-            <option value="none">No Cloaking</option>
-            <option value="calc">Calculator (Ctrl+Alt+C)</option>
-            <option value="doc">Document (Ctrl+Alt+D)</option>
-            <option value="sheet">Spreadsheet (Ctrl+Alt+S)</option>
-          </select>
+          <label class="setting-row">
+            <span><i class="fas fa-cloud-rain"></i> Rain Background</span>
+            <input type="checkbox" id="rain-enabled" checked>
+          </label>
+          <label class="setting-row">
+            <span><i class="fas fa-expand"></i> Fullscreen Games</span>
+            <input type="checkbox" id="fullscreen-games" checked>
+          </label>
         </div>
-
-        <!-- Audio Settings -->
-        <div>
-          <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Audio</h3>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <label class="setting-row">
-              <span><i class="fas fa-volume-up"></i> Master Volume</span>
-              <input type="range" id="master-volume" min="0" max="100" value="100" style="width: 100px;">
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-music"></i> Background Music</span>
-              <input type="checkbox" id="bg-music" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-volume-down"></i> Game Sounds</span>
-              <input type="checkbox" id="game-sounds" checked>
-            </label>
-          </div>
-        </div>
-
-        <!-- Data -->
         <div>
           <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Data</h3>
-          <div style="display: flex; gap: 0.5rem;">
-            <button class="btn" id="export-favorites" style="flex: 1;"><i class="fas fa-download"></i> Export</button>
-            <button class="btn" id="import-favorites" style="flex: 1;"><i class="fas fa-upload"></i> Import</button>
-          </div>
           <button class="btn" id="clear-favorites" style="width: 100%; margin-top: 0.5rem; color: #ef4444;"><i class="fas fa-trash"></i> Clear All Favorites</button>
-        </div>
-
-        <!-- Performance -->
-        <div>
-          <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Performance</h3>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <label class="setting-row">
-              <span><i class="fas fa-tachometer-alt"></i> Enable Hardware Accel</span>
-              <input type="checkbox" id="hardware-accel" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-images"></i> Lazy Load Images</span>
-              <input type="checkbox" id="lazy-load" checked>
-            </label>
-            <label class="setting-row">
-              <span><i class="fas fa-ban"></i> Clear Cache</span>
-              <button class="btn" style="padding: 4px 8px; font-size: 0.75rem;">Clear</button>
-            </label>
-          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="tos-modal" class="modal" style="padding: 1rem;">
-    <div class="modal-content" style="max-width: 680px; max-height: 85vh;">
+  <div id="tos-modal" class="modal">
+    <div class="modal-content" style="max-width: 680px;">
       <div class="modal-header">
-        <h2><i class="fas fa-file-contract"></i> Terms of Service & Privacy Policy</h2>
+        <h2><i class="fas fa-file-contract"></i> Terms of Service</h2>
         <button class="close-btn" id="close-tos">&times;</button>
       </div>
-      
-      <div style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; overflow-y: auto; max-height: 60vh; padding-right: 0.5rem;">
-        <div style="background: var(--surface-elevated); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border-left: 3px solid #a78bfa;">
-          <p style="font-size: 0.85rem;">By accessing and using <strong style="color: #a78bfa;">Lunar Games</strong>, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree, please discontinue use immediately.</p>
-        </div>
-
-        <h3 style="font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fas fa-copyright"></i> Intellectual Property
-        </h3>
-        <ul style="padding-left: 1.25rem; margin-bottom: 1rem; line-height: 1.8;">
-          <li>Lunar Games does not claim ownership of any games hosted on this platform</li>
-          <li>All games are the intellectual property of their respective copyright holders</li>
-          <li>This platform is not affiliated with, endorsed by, or connected to any educational institutions</li>
-          <li>We comply with DMCA takedown requests</li>
-        </ul>
-
-        <h3 style="font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fas fa-user-shield"></i> User Responsibilities
-        </h3>
-        <ul style="padding-left: 1.25rem; margin-bottom: 1rem; line-height: 1.8;">
-          <li>Use the platform responsibly and legally</li>
-          <li>Do not use during school instructional time without proper authorization</li>
-          <li>Respect the intellectual property rights of game developers</li>
-          <li>Do not attempt to bypass security measures or hack the platform</li>
-          <li>Do not upload or distribute malicious content</li>
-          <li>Must be at least 13 years of age (COPPA compliance)</li>
-        </ul>
-
-        <h3 style="font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fas fa-shield-alt"></i> Privacy & Data
-        </h3>
-        <ul style="padding-left: 1.25rem; margin-bottom: 1rem; line-height: 1.8;">
-          <li>We do not collect personal information without consent</li>
-          <li>Basic analytics are collected anonymously for service improvement</li>
-          <li>Cookies may be used for functionality and preferences</li>
-          <li>We do not sell or share user data with third parties</li>
-          <li>External games may have their own privacy policies</li>
-        </ul>
-
-        <h3 style="font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fas fa-gamepad"></i> Game Content Disclaimer
-        </h3>
-        <ul style="padding-left: 1.25rem; margin-bottom: 1rem; line-height: 1.8;">
-          <li>Games are provided "as is" without warranty of any kind</li>
-          <li>We are not responsible for game content, ads, or external links</li>
-          <li>Some games may contain advertisements from third parties</li>
-          <li>Game availability may change without notice</li>
-          <li>We do not guarantee game functionality or compatibility</li>
-        </ul>
-
-        <h3 style="font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fas fa-ban"></i> Prohibited Activities
-        </h3>
-        <ul style="padding-left: 1.25rem; margin-bottom: 1rem; line-height: 1.8;">
-          <li>Using automated scripts or bots to access the service</li>
-          <li>Attempting to disrupt service availability (DDoS attacks)</li>
-          <li>Reverse engineering or decompiling platform code</li>
-          <li>Using the platform for any illegal activities</li>
-          <li>Sharing inappropriate or harmful content</li>
-        </ul>
-
-        <h3 style="font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fas fa-balance-scale"></i> Limitation of Liability
-        </h3>
-        <ul style="padding-left: 1.25rem; margin-bottom: 1rem; line-height: 1.8;">
-          <li>To the fullest extent permitted by law, Lunar Games shall not be liable for:</li>
-          <li>Any direct, indirect, incidental, or consequential damages</li>
-          <li>Loss of data, profits, or business opportunities</li>
-          <li>Game malfunctions or compatibility issues</li>
-          <li>Content provided by third-party game developers</li>
-          <li>Unauthorized access to user information</li>
-        </ul>
-
-        <h3 style="font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fas fa-sync-alt"></i> Changes to Terms
-        </h3>
-        <p style="padding-left: 1.25rem; margin-bottom: 1rem;">We reserve the right to modify these Terms of Service at any time. Users will be notified of significant changes. Continued use of the platform constitutes acceptance of updated terms.</p>
-
-        <h3 style="font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fas fa-envelope"></i> Contact
-        </h3>
-        <p style="padding-left: 1.25rem; margin-bottom: 1rem;">For questions, concerns, or DMCA takedown requests, please contact us through the platform's reporting system.</p>
-
-        <div style="background: rgba(239, 68, 68, 0.15); border-radius: 12px; padding: 1rem; margin-top: 1rem; border-left: 3px solid #ef4444;">
-          <p style="font-size: 0.85rem;">This service is provided "as is" with no guarantees. Use at your own risk.</p>
-        </div>
+      <div style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.7;">
+        <p>By using Lunar Games, you agree to our terms. Games are property of their respective owners.</p>
       </div>
-
-      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border);">
-        <button class="btn" id="tos-disagree" style="color: #ef4444; border-color: #ef4444;">I Disagree</button>
-        <button class="btn" id="tos-agree">I Agree</button>
+      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+        <button class="btn" id="tos-disagree" style="color: #ef4444;">Disagree</button>
+        <button class="btn" id="tos-agree">Agree</button>
       </div>
     </div>
   </div>
@@ -937,42 +833,9 @@
     <button class="close-btn" id="notification-close" style="font-size: 1rem;">&times;</button>
   </div>
 
-  <!-- V2 POPUP -->
-  <div id="v2-popup" class="modal active" style="background: rgba(0,0,0,0.9);">
-    <div class="modal-content" style="text-align: center; max-width: 480px;">
-      <img src="lunar.png" style="width: 80px; height: auto; margin-bottom: 0.5rem; filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.6));">
-      <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">
-        <span style="color: #a78bfa;">Lunar</span> Games <span style="font-size: 0.8rem; background: #a78bfa; color: #000; padding: 2px 8px; border-radius: 8px; vertical-align: middle;">V2</span>
-      </h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Formerly Frosts Games</p>
-      
-      <div style="background: var(--surface-elevated); border-radius: 12px; padding: 1.25rem; text-align: left; margin-bottom: 1.25rem;">
-        <h3 style="font-size: 1rem; margin-bottom: 0.75rem; color: #a78bfa;">✨ What's New:</h3>
-        <ul style="font-size: 0.9rem; color: var(--text-muted); padding-left: 1.25rem; line-height: 1.8;">
-          <li>Completely redesigned UI</li>
-          <li>New purple/moon theme</li>
-          <li>Animated rain background</li>
-          <li>Smoother animations</li>
-          <li>Faster loading</li>
-          <li>Add Stealth Mode for sight! Teachers now cant see it!</li>
-        </ul>
-      </div>
-
-      <div style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(6, 182, 212, 0.2)); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem;">
-        <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem;">🚀 Big Drops Coming Soon!</p>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">New games, features & more!</p>
-      </div>
-
-      <button class="btn" id="close-v2-popup" style="width: 100%; justify-content: center; padding: 0.85rem;">
-        <i class="fas fa-rocket"></i> Let's Go!
-      </button>
-    </div>
-  </div>
-
-  <!-- HOME CARDS -->
-  <div id="home-cards" class="modal active" style="display: flex; align-items: center; justify-content: center;">
+  <div id="home-cards" class="modal active" style="display: flex;">
     <div style="text-align: center;">
-      <img src="lunar.png" class="home-logo" style="width: 120px; height: auto; margin: 0 auto 1rem; filter: drop-shadow(0 0 25px rgba(167, 139, 250, 0.6)); animation: glow 2s ease-in-out infinite alternate;">
+      <img src="lunar.png" class="home-logo" style="width: 120px; height: auto; margin: 0 auto 1rem;">
       <div class="home-brand">
         <span class="brand-lunar">LUNAR</span><span class="brand-games">GAMES</span>
       </div>
@@ -991,132 +854,52 @@
     </div>
   </div>
 
+  <!-- V2 Welcome Popup -->
+  <div id="v2-welcome" class="modal" style="display: flex;">
+    <div class="welcome-popup">
+      <img src="lunar.png" alt="Lunar Games">
+      <h2>Welcome to <span style="color: #a78bfa;">Lunar V2</span></h2>
+      <div class="version-badge">✨ MAJOR UPDATE ✨</div>
+      
+      <div class="update-list">
+        <ul style="list-style: none;">
+          <li><i class="fas fa-palette"></i> <strong>New UI</strong> - Complete redesign with purple/moon theme</li>
+          <li><i class="fas fa-gamepad"></i> <strong>700+ Games</strong> - Massive library of games</li>
+          <li><i class="fas fa-cloud-rain"></i> <strong>Animated Rain</strong> - Beautiful dynamic background</li>
+          <li><i class="fas fa-user-secret"></i> <strong>Stealth Mode</strong> - Play without being detected</li>
+          <li><i class="fas fa-tachometer-alt"></i> <strong>Faster Loading</strong> - Optimized performance</li>
+          <li><i class="fas fa-heart"></i> <strong>Favorites System</strong> - Save your favorite games</li>
+        </ul>
+      </div>
+      
+      <button class="welcome-btn" id="close-welcome">
+        <i class="fas fa-rocket"></i> Let's Go!
+      </button>
+    </div>
+  </div>
+
   <script>
-    // ===== FULL GAME LIST =====
-    const GAMES = [
-      {title: "Minecraft 1.8.8 MULTIPLAYER!", description: "Multiplayer", image: "thumbnails/IMG_4664.jpeg", link: "games/minecraft/Minecraft 1.8.8.html", genre: ["Adventure", "Survival"], new: true},
-      {title: "BlackJack", description: "Cards", image: "thumbnails/blackjack.jpg", link: "games/blackjack/index.html", genre: ["Cards", "Puzzle"], new: true},
-      {title: "Dodge Miner", description: "Clicker", image: "thumbnails/dm2.jpg", link: "games/dm2/index.html", genre: ["Clicker", "Arcade"], new: true},
-      {title: "Dodge Miner", description: "Clicker", image: "thumbnails/dm1.jpg", link: "games/dm1/index.html", genre: ["Clicker", "Arcade"], new: true},
-      {title: "FNAF 4", description: "Horror", image: "thumbnails/fnaf4.jpg", link: "games/fnaf4/index.html", genre: ["Horror", "Strategy"], new: true},
-      {title: "FNAF 3", description: "Horror", image: "thumbnails/fnaf3.jpg", link: "games/fnaf3/index.html", genre: ["Horror", "Strategy"], new: true},
-      {title: "FNAF 2", description: "Horror", image: "thumbnails/fnaf2.jpg", link: "games/fnaf2/index.html", genre: ["Horror", "Strategy"], new: true},
-      {title: "FNAF 1", description: "Horror", image: "thumbnails/fnaf1.jpg", link: "games/fnaf1/index.html", genre: ["Horror", "Strategy"], new: true},
-      {title: "Water Works!", description: "Strategy", image: "thumbnails/waterworks.jpg", link: "games/waterworks/index.html", genre: ["Strategy"], new: true},
-      {title: "Smash Karts", description: "Racing", image: "thumbnails/smashkarts.jpg", link: "games/smashkarts/index.html", genre: ["Racing"], new: true},
-      {title: "Space Waves", description: "Puzzle", image: "thumbnails/spacewaves.jpg", link: "games/spacewaves/index.html", genre: ["Puzzle"], new: true},
-      {title: "Little Alchemy 2", description: "Puzzle", image: "thumbnails/littlealchemy2.jpg", link: "games/littlealchemy/index.html", genre: ["Puzzle"], new: true},
-      {title: "Learn To Fly 3", description: "Adventure", image: "thumbnails/ltf3.jpg", link: "games/learntofly3/index.html", genre: ["Adventure"], new: true},
-      {title: "Escape Road", description: "Arcade", image: "thumbnails/escaperoad.jpg", link: "games/escaperoad/index.html", genre: ["Arcade"], new: true},
-      {title: "Subway Surfers", description: "Endless", image: "thumbnails/swsbj.jpg", link: "games/subwaysurfers/index.html", genre: ["Endless"], new: true},
-      {title: "Five Nights At Epstines", description: "Horror", image: "thumbnails/fivenightsateptines.jpg", link: "games/fivenightsatepstines/index.html", genre: ["Horror"], new: true},
-      {title: "Block Blast", description: "Puzzle", image: "thumbnails/IMG_4569.jpeg", link: "games/blockblast/index.html", genre: ["Puzzle"], new: false},
-      {title: "Eggy Car", description: "Racing", image: "thumbnails/IMG_4568.jpeg", link: "games/eggycar/index.html", genre: ["Racing"], new: false},
-      {title: "Worlds Hardest Game", description: "Puzzle", image: "thumbnails/IMG_4556.jpeg", link: "games/worldshardestgame/index.html", genre: ["Puzzle"], new: false},
-      {title: "Golf Battel", description: "Sports", image: "thumbnails/Golfbattel.jpg", link: "games/golfbattel/index.html", genre: ["Sports"], new: false},
-      {title: "Google Baseball", description: "Sports", image: "thumbnails/googlebaseball.jpg", link: "games/googlebaseball/index.html", genre: ["Sports"], new: false},
-      {title: "Geometry Dash SUB ZERO", description: "Platformer", image: "thumbnails/geometrydashsubzero.jpg", link: "games/geometrydashsubzero/index.html", genre: ["Platformer"], new: false},
-      {title: "Slither.io", description: "Arcade", image: "thumbnails/slitherio.jpg", link: "games/slitherio/index.html", genre: ["Arcade"], new: false},
-      {title: "Sand Box City", description: "Simulation", image: "thumbnails/sandboxcity.jpg", link: "games/Sandboxcity/index.html", genre: ["Simulation"], new: false},
-      {title: "Soccer Bros", description: "Sports", image: "thumbnails/Soccerbros.jpg", link: "games/soccerbros/index.html", genre: ["Sports"], new: false},
-      {title: "Wrestle Bros", description: "Fighting", image: "thumbnails/wrestlebros.jpg", link: "games/wrestlebros/index.html", genre: ["Fighting"], new: false},
-      {title: "Ping Pong", description: "Sports", image: "thumbnails/pingpongrandom.jpg", link: "games/PingPongRandom/index.html", genre: ["Sports"], new: false},
-      {title: "Soccer Random", description: "Sports", image: "thumbnails/Soccerrandom.jpg", link: "games/soccerrandom/index.html", genre: ["Sports"], new: false},
-      {title: "Volly Random", description: "Sports", image: "thumbnails/Vollyrandom.jpg", link: "games/VollyRandom/index.html", genre: ["Sports"], new: false},
-      {title: "Level Devil", description: "Platformer", image: "thumbnails/leveldevil.jpg", link: "games/leveldevil/index.html", genre: ["Platformer"], new: false},
-      {title: "Boxing Random", description: "Sports", image: "thumbnails/boxingrandom.jpg", link: "games/boxingrandom/index.html", genre: ["Sports"], new: false},
-      {title: "Kart Bros", description: "Racing", image: "thumbnails/kartbros.jpg", link: "games/kartbros/index.html", genre: ["Racing"], new: false},
-      {title: "8 Ball Pool", description: "Sports", image: "thumbnails/8ballpool.jpg", link: "games/8ballpool/index.html", genre: ["Sports"], new: false},
-      {title: "Crazy Cattle 3D", description: "Simulation", image: "thumbnails/crazycattle3d.jpg", link: "games/crazycattle3d/index.html", genre: ["Simulation"], new: false},
-      {title: "We Become What We Behold", description: "Simulation", image: "thumbnails/wbwwb.jpg", link: "games/webecomewhatwebehold/index.html", genre: ["Simulation"], new: false},
-      {title: "Stickman Hook", description: "Puzzle", image: "thumbnails/stickmanhook.jpg", link: "games/stickman-hook/index.html", genre: ["Puzzle", "Arcade"], new: false},
-      {title: "Moto X3M", description: "Racing", image: "thumbnails/moto3xm.jpg", link: "games/motox3m/index.html", genre: ["Racing"], new: false},
-      {title: "Moto X3M 2", description: "Racing", image: "thumbnails/moto3xm2.jpg", link: "games/moto3xm2/index.html", genre: ["Racing"], new: false},
-      {title: "Moto X3M 3", description: "Racing", image: "thumbnails/moto3xm3.jpg", link: "games/moto3xm3/index.html", genre: ["Racing"], new: false},
-      {title: "Snow Rider 3D", description: "Racing", image: "thumbnails/snowrider3d.jpg", link: "games/snowrider3d/index.html", genre: ["Racing"], new: false},
-      {title: "Mountain Bike Racer", description: "Racing", image: "thumbnails/mountainbikeracer.jpg", link: "games/mountainbikeracer/index.html", genre: ["Racing"], new: false},
-      {title: "Chrome Dino", description: "Arcade", image: "thumbnails/chromedino.jpg", link: "games/chromedino/index.html", genre: ["Arcade"], new: false},
-      {title: "Portal 2D", description: "Puzzle", image: "thumbnails/portal2d.jpg", link: "games/ruffle/index.html?swf=games/Portal_wcs2.swf", genre: ["Puzzle"], new: false},
-      {title: "Learn To Fly", description: "Adventure", image: "thumbnails/l2f.jpg", link: "games/ruffle/index.html?swf=games/learn-to-fly-3789.swf", genre: ["Adventure"], new: false},
-      {title: "Learn To Fly 2", description: "Adventure", image: "thumbnails/l2f2.jpg", link: "games/ruffle/index.html?swf=games/learn-to-fly-2-11967.swf", genre: ["Adventure"], new: false},
-      {title: "Jack Smith", description: "Adventure", image: "thumbnails/jacksmith.jpg", link: "games/ruffle/index.html?swf=games/jacksmith.swf", genre: ["Adventure"], new: false},
-      {title: "Run 2", description: "Platformer", image: "thumbnails/run2.jpg", link: "games/ruffle/index.html?swf=games/run2.swf", genre: ["Platformer"], new: false},
-      {title: "Run 3", description: "Platformer", image: "thumbnails/run3.jpg", link: "games/ruffle/index.html?swf=games/run3-new.swf", genre: ["Platformer"], new: false},
-      {title: "Awesome Tanks 2", description: "Action", image: "thumbnails/at2.jpg", link: "games/ruffle/index.html?swf=games/awesome_tanks_2.swf", genre: ["Action"], new: false},
-      {title: "Bloons TD 5", description: "Strategy", image: "thumbnails/btd5.jpg", link: "games/ruffle/index.html?swf=games/bloonstd5", genre: ["Strategy"], new: false},
-      {title: "Cut The Rope", description: "Puzzle", image: "thumbnails/cuttherope.jpg", link: "games/cuttherope/index.html", genre: ["Puzzle"], new: false},
-      {title: "RaftWars", description: "Action", image: "thumbnails/raftwars1.jpg", link: "games/ruffle/index.html?swf=games/raftwars.swf", genre: ["Action"], new: false},
-      {title: "Bloxorz", description: "Puzzle", image: "thumbnails/bloxorz.jpg", link: "games/ruffle/index.html?swf=games/bloxorz.swf", genre: ["Puzzle"], new: false},
-      {title: "Cut The Rope Holiday", description: "Puzzle", image: "thumbnails/cuttheropeh.jpg", link: "games/cuttheropeholiday/index.html", genre: ["Puzzle"], new: false},
-      {title: "Baseball Bros", description: "Sports", image: "thumbnails/baseballbros.jpg", link: "games/baseballbros/index.html", genre: ["Sports"], new: false},
-      {title: "Free Rider 3", description: "Racing", image: "thumbnails/freerider3.jpg", link: "games/ruffle/index.html?swf=games/freerider-3.swf", genre: ["Racing"], new: false},
-      {title: "Monkey Mart", description: "Simulation", image: "thumbnails/monkeymart.jpg", link: "games/monkeymart/index.html", genre: ["Simulation"], new: false},
-      {title: "Drive Mad", description: "Racing", image: "thumbnails/drivemad.jpg", link: "games/drivemad/index.html", genre: ["Racing"], new: false},
-      {title: "Temple Run", description: "Arcade", image: "thumbnails/templerun.jpg", link: "games/templerun/index.html", genre: ["Arcade"], new: false},
-      {title: "Flappy Bird", description: "Arcade", image: "thumbnails/flappybird.jpg", link: "games/flappybird/index.html", genre: ["Arcade"], new: false},
-      {title: "Football Bros", description: "Sports", image: "thumbnails/footballbros.jpg", link: "games/footballbros/index.html", genre: ["Sports"], new: false},
-      {title: "Duck Clicker", description: "Clicker", image: "thumbnails/duckclicker.jpg", link: "games/duckclicker/index.html", genre: ["Clicker"], new: false},
-      {title: "Basketrandom", description: "Sports", image: "thumbnails/basketrandom.jpg", link: "games/basketrandom/index.html", genre: ["Sports"], new: false},
-      {title: "Raft Wars 2", description: "Action", image: "thumbnails/raftwars2.jpg", link: "games/raftwars/index.html", genre: ["Action"], new: false},
-      {title: "Vex 3", description: "Platformer", image: "thumbnails/vex3.jpg", link: "games/vex3/index.html", genre: ["Platformer"], new: false},
-      {title: "Vex 4", description: "Platformer", image: "thumbnails/vex4.jpg", link: "games/vex4/index.html", genre: ["Platformer"], new: false},
-      {title: "Vex 5", description: "Platformer", image: "thumbnails/vex5.jpg", link: "games/vex5/index.html", genre: ["Platformer"], new: false},
-      {title: "Vex 6", description: "Platformer", image: "thumbnails/vex6.jpg", link: "games/vex6/index.html", genre: ["Platformer"], new: false},
-      {title: "Ducklife", description: "Simulation", image: "thumbnails/ducklife.jpg", link: "games/ducklife/index.html", genre: ["Simulation"], new: false},
-      {title: "Ducklife 2", description: "Simulation", image: "thumbnails/ducklife2.jpg", link: "games/ducklife2/index.html", genre: ["Simulation"], new: false},
-      {title: "Ducklife 3", description: "Simulation", image: "thumbnails/ducklife3.jpg", link: "games/ducklife3/index.html", genre: ["Simulation"], new: false},
-      {title: "Ducklife 4", description: "Simulation", image: "thumbnails/ducklife4.jpg", link: "games/ducklife4/index.html", genre: ["Simulation"], new: false},
-      {title: "Tunnel Rush", description: "Arcade", image: "thumbnails/tunnelrush.jpg", link: "games/tunnelrush/index.html", genre: ["Arcade"], new: false},
-      {title: "Slope", description: "Arcade", image: "thumbnails/slope.jpg", link: "games/slope/index.html", genre: ["Arcade"], new: false},
-      {title: "Slope 2", description: "Arcade", image: "thumbnails/slope2.jpg", link: "games/slope2/index.html", genre: ["Arcade"], new: false},
-      {title: "The Impossible Quiz", description: "Puzzle", image: "thumbnails/theimpossiablequiz.jpg", link: "games/theimpossiablequiz/index.html", genre: ["Puzzle"], new: false},
-      {title: "Line Rider", description: "Physics", image: "thumbnails/linerider.jpg", link: "games/linerider/index.html", genre: ["Physics"], new: false},
-      {title: "CSGO Clicker", description: "Clicker", image: "thumbnails/csgo.png", link: "games/csgoclicker/index.html", genre: ["Clicker"], new: false},
-      {title: "Doodle Jump", description: "Platformer", image: "thumbnails/doodlejump.jpg", link: "games/doodlejump/index.html", genre: ["Platformer"], new: false},
-      {title: "Nut Simulator", description: "Simulation", image: "thumbnails/nut.png", link: "games/nut-simulator/index.html", genre: ["Simulation"], new: false},
-      {title: "Tiny Fishing", description: "Simulation", image: "thumbnails/tiny-fishing.jpg", link: "games/tinyfishing/index.html", genre: ["Simulation"], new: false},
-      {title: "Cluster Rush", description: "Arcade", image: "thumbnails/clusterrush.jpg", link: "games/clusterrush/index.html", genre: ["Arcade"], new: false},
-      {title: "Bit Life", description: "Simulation", image: "thumbnails/bitlife.jpg", link: "games/bitlife/index.html", genre: ["Simulation"], new: false},
-      {title: "Stack", description: "Puzzle", image: "thumbnails/stack.jpg", link: "games/stack/game.html", genre: ["Puzzle"], new: false},
-      {title: "Crossy Roads", description: "Arcade", image: "thumbnails/crossyroads.jpg", link: "games/crossyroad/index.html", genre: ["Arcade"], new: false},
-      {title: "Poly Track", description: "Racing", image: "thumbnails/pollytrack.jpg", link: "games/polytrack/index.html", genre: ["Racing"], new: false},
-      {title: "House Of Hazards", description: "Arcade", image: "thumbnails/hoh.jpg", link: "games/hoh/index.html", genre: ["Arcade"], new: false},
-      {title: "Geometry Dash", description: "Platformer", image: "thumbnails/geodash.jpg", link: "games/geometrydash/index.html", genre: ["Platformer"], new: false},
-      {title: "Retro Bowl COLLEGE", description: "Sports", image: "thumbnails/rrbc.jpg", link: "games/rrbc/index.html", genre: ["Sports"], new: false},
-      {title: "OvO", description: "Platformer", image: "thumbnails/ovo.jpg", link: "games/ovo/index.html", genre: ["Platformer"], new: false},
-      {title: "Drift Hunters", description: "Racing", image: "thumbnails/drifthunters.jpg", link: "games/drifthunters/index.html", genre: ["Racing"], new: false},
-      {title: "Fire boy & Water Girl", description: "Puzzle", image: "thumbnails/fireboyandwatergirl.jpg", link: "games/fireboyandwatergirlforesttemple/index.html", genre: ["Puzzle"], new: false},
-      {title: "Paper.io", description: "Strategy", image: "thumbnails/paperio.jpg", link: "games/paperio/index.html", genre: ["Strategy"], new: false},
-      {title: "Basketball Legends 2020", description: "Sports", image: "thumbnails/basketball1.jpg", link: "games/basketballlegends/index.html", genre: ["Sports"], new: false},
-      {title: "Basketball Stars", description: "Sports", image: "thumbnails/basketball2.jpg", link: "games/basketballstars/index.html", genre: ["Sports"], new: false},
-      {title: "Basketball Bros IO", description: "Sports", image: "thumbnails/basketball3.jpg", link: "games/basketbrosio/index.html", genre: ["Sports"], new: false},
-      {title: "Cookie Clicker", description: "Clicker", image: "thumbnails/cookieclicker.jpg", link: "games/cookieclicker/index.html", genre: ["Clicker"], new: false},
-      {title: "Retro Bowl", description: "Sports", image: "thumbnails/retrobowl.jpg", link: "games/retrobowl/index.html", genre: ["Sports"], new: false},
-      {title: "Clicker Heroes", description: "Clicker", image: "thumbnails/clickerheros.jpg", link: "games/clickerheroes/index.html", genre: ["Clicker"], new: false},
-      {title: "PacMan", description: "Arcade", image: "thumbnails/pacman.jpg", link: "games/pacman/index.html", genre: ["Arcade"], new: false},
+    // CDN Configuration
+    const zonesurls = [
+      "https://cdn.jsdelivr.net/gh/freebuisness/assets@main/zones.json",
+      "https://cdn.jsdelivr.net/gh/freebuisness/assets@latest/zones.json",
+      "https://cdn.jsdelivr.net/gh/freebuisness/assets@master/zones.json",
+      "https://cdn.jsdelivr.net/gh/freebuisness/assets/zones.json"
     ];
-
-    const GENRES = [
-      {name: "All", icon: "fa-globe", count: GAMES.length},
-      {name: "Trending", icon: "fa-fire", count: 0},
-      {name: "New", icon: "fa-sparkles", count: GAMES.filter(g => g.new).length},
-      {name: "Arcade", icon: "fa-gamepad", count: 0},
-      {name: "Puzzle", icon: "fa-puzzle-piece", count: 0},
-      {name: "Sports", icon: "fa-football-ball", count: 0},
-      {name: "Racing", icon: "fa-car", count: 0},
-      {name: "Platformer", icon: "fa-person-running", count: 0},
-    ];
-
+    const coverURL = "https://cdn.jsdelivr.net/gh/freebuisness/covers@main";
+    const htmlURL = "https://cdn.jsdelivr.net/gh/freebuisness/html@main";
+    
+    let zones = [];
     let currentGenre = "All";
     let currentGame = null;
-    let favorites = JSON.parse(localStorage.getItem("frosts-favorites") || "[]");
+    let favorites = JSON.parse(localStorage.getItem("lunar-favorites") || "[]");
+    let allTags = [];
 
     const gamesContainer = document.getElementById("games-container");
     const genreList = document.getElementById("genre-list");
     const searchInput = document.getElementById("gameSearch");
     const gameMenu = document.getElementById("game-menu");
     const gameFrame = document.getElementById("game-frame");
-    const notification = document.getElementById("notification");
 
     function createRain() {
       const container = document.getElementById("rain");
@@ -1132,12 +915,59 @@
       }
     }
 
+    async function fetchZones() {
+      let zonesURL = zonesurls[Math.floor(Math.random() * zonesurls.length)];
+      
+      try {
+        let sharesponse = await fetch("https://api.github.com/repos/freebuisness/assets/commits?t="+Date.now());
+        if (sharesponse && sharesponse.status === 200) {
+          let shajson = await sharesponse.json();
+          let sha = shajson[0]['sha'];
+          if (sha) {
+            zonesURL = `https://cdn.jsdelivr.net/gh/freebuisness/assets@${sha}/zones.json`;
+          }
+        }
+      } catch (error) {
+        try {
+          let secondarysharesponse = await fetch("https://raw.githubusercontent.com/freebuisness/xml/refs/heads/main/sha.txt?t="+Date.now());
+          if (secondarysharesponse && secondarysharesponse.status === 200) {
+            let sha = (await secondarysharesponse.text()).trim();
+            if (sha) {
+              zonesURL = `https://cdn.jsdelivr.net/gh/freebuisness/assets@${sha}/zones.json`;
+            }
+          }
+        } catch(error) {}
+      }
+      
+      const response = await fetch(zonesURL+"?t="+Date.now());
+      const json = await response.json();
+      zones = json;
+      
+      // Collect all tags
+      const tagSet = new Set();
+      for (const zone of zones) {
+        if (Array.isArray(zone.special)) {
+          zone.special.forEach(tag => tagSet.add(tag));
+        }
+      }
+      allTags = Array.from(tagSet);
+      
+      renderGenres();
+      renderGames();
+    }
+
     function renderGenres() {
-      genreList.innerHTML = GENRES.map(g => `
+      const genres = [
+        {name: "All", icon: "fa-globe", count: zones.length},
+        {name: "New", icon: "fa-sparkles", count: zones.filter(z => z.new).length},
+        ...allTags.slice(0, 8).map(tag => ({name: tag, icon: "fa-tag", count: zones.filter(z => z.special?.includes(tag)).length}))
+      ];
+      
+      genreList.innerHTML = genres.map(g => `
         <div class="genre-item ${g.name === currentGenre ? 'active' : ''}" data-genre="${g.name}">
           <i class="fas ${g.icon}"></i>
           <span>${g.name}</span>
-          <span class="count">${g.count || ''}</span>
+          <span class="count">${g.count}</span>
         </div>
       `).join("");
 
@@ -1151,48 +981,57 @@
     }
 
     function renderGames() {
-      let filtered = GAMES;
+      let filtered = [...zones];
       
       if (currentGenre === "New") {
-        filtered = GAMES.filter(g => g.new);
+        filtered = zones.filter(z => z.new);
       } else if (currentGenre !== "All") {
-        filtered = GAMES.filter(g => g.genre.includes(currentGenre));
+        filtered = zones.filter(z => z.special?.includes(currentGenre));
       }
       
       const search = searchInput.value.toLowerCase();
       if (search) {
-        filtered = filtered.filter(g => 
-          g.title.toLowerCase().includes(search) || 
-          g.description.toLowerCase().includes(search)
-        );
+        filtered = filtered.filter(z => z.name.toLowerCase().includes(search));
       }
 
-      gamesContainer.innerHTML = filtered.map((game, i) => `
+      gamesContainer.innerHTML = filtered.map((zone, i) => `
         <div class="game-card" data-index="${i}" style="animation: fadeIn 0.3s ease ${i * 0.03}s both;">
-          <img class="card-image" src="${game.image}" alt="${game.title}" onerror="this.style.display='none'">
+          <img class="card-image" src="${zone.cover.replace('{COVER_URL}', coverURL)}" alt="${zone.name}" onerror="this.style.display='none'">
           <div class="card-content">
-            <div class="game-title">${game.title}</div>
-            <div class="game-genres">${game.genre.slice(0, 2).join(" · ")}</div>
+            <div class="game-title">${zone.name}</div>
+            <div class="game-genres">${zone.special?.slice(0, 2).join(" · ") || "Game"}</div>
             <button class="play-btn"><i class="fas fa-play"></i> Play</button>
           </div>
         </div>
       `).join("");
 
       document.getElementById("totalGames").textContent = `${filtered.length} Games`;
+      document.getElementById("favorites-count").textContent = `${favorites.length} Favorites`;
 
       gamesContainer.querySelectorAll(".game-card").forEach(card => {
         card.addEventListener("click", () => {
-          const game = filtered[card.dataset.index];
-          openGame(game.link, game.title);
+          const zone = filtered[card.dataset.index];
+          openGame(zone);
         });
       });
     }
 
-    function openGame(link, title) {
-      currentGame = { link, title };
-      gameFrame.src = link;
-      gameMenu.classList.add("active");
-      updateFavBtn();
+    function openGame(zone) {
+      currentGame = zone;
+      
+      if (zone.url.startsWith("http")) {
+        window.open(zone.url, "_blank");
+        return;
+      }
+      
+      const url = zone.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
+      fetch(url+"?t="+Date.now()).then(response => response.text()).then(html => {
+        gameFrame.contentDocument.open();
+        gameFrame.contentDocument.write(html);
+        gameFrame.contentDocument.close();
+        gameMenu.classList.add("active");
+        updateFavBtn();
+      }).catch(error => alert("Failed to load zone: " + error));
     }
 
     function closeGame() {
@@ -1201,73 +1040,42 @@
     }
 
     function openProxy() {
-      window.open("https://lunarr-os.vercel.app/os.html", "_blank");
+      const newTab = window.open("about:blank", "_blank");
+      if (newTab) {
+        newTab.document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head><title>Lunar OS</title><link rel="icon" href="lunar.png"></head>
+            <body style="margin:0"><script>window.location.href="https://lunarr-os.vercel.app";<\/script></body>
+          </html>
+        `);
+        newTab.document.close();
+      } else {
+        window.open("https://lunarr-os.vercel.app", "_blank");
+      }
     }
 
     function openStealthMode() {
-  const newTab = window.open("about:blank", "_blank");
-
-  if (!newTab) {
-    alert("Popup blocked!");
-    return;
-  }
-
-  newTab.document.write(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Lunar OS</title>
-        <link rel="icon" href="lunar.png">
-        <style>
-          body {
-            margin: 0;
-            background: #0a0a0f;
-            color: white;
-            font-family: sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-          }
-        </style>
-      </head>
-      <body>
-        <h2>Loading Lunar OS...</h2>
-        <script>
-          setTimeout(() => {
-            window.location.href = "https://lunarr-os.vercel.app";
-          }, 500);
-        <\/script>
-      </body>
-    </html>
-  `);
-
-  newTab.document.close();
-}
-
-    document.addEventListener("mousemove", (e) => {
-      const cards = document.querySelectorAll(".home-card");
-      cards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const cardX = rect.left + rect.width / 2;
-        const cardY = rect.top + rect.height / 2;
-        const angleX = (e.clientX - cardX) / 20;
-        const angleY = (e.clientY - cardY) / 20;
-        card.style.transform = `perspective(1000px) rotateX(${-angleY}deg) rotateY(${angleX}deg)`;
-      });
-    });
+      openProxy();
+    }
 
     function updateFavBtn() {
       const btn = document.getElementById("fav-btn");
-      btn.innerHTML = favorites.includes(currentGame?.title) ? '<i class="fas fa-heart"></i> Favorited' : '<i class="fas fa-heart"></i> Favorite';
+      const isFav = favorites.some(f => f.id === currentGame?.id);
+      btn.innerHTML = isFav ? '<i class="fas fa-heart"></i> Favorited' : '<i class="fas fa-heart"></i> Favorite';
     }
 
     function showToast(message) {
       document.getElementById("notification-text").textContent = message;
-      notification.classList.add("show");
-      setTimeout(() => notification.classList.remove("show"), 3000);
+      document.getElementById("notification").classList.add("show");
+      setTimeout(() => document.getElementById("notification").classList.remove("show"), 3000);
     }
 
+    window.showGames = function() {
+      document.getElementById("home-cards").style.display = "none";
+    };
+
+    // Event Listeners
     document.getElementById("settings-btn").addEventListener("click", () => {
       document.getElementById("settings-modal").classList.add("active");
     });
@@ -1287,66 +1095,80 @@
     document.getElementById("tos-disagree").addEventListener("click", () => {
       window.location.href = "https://google.com";
     });
-
+    document.getElementById("stealth-btn").addEventListener("click", openStealthMode);
     document.getElementById("exit-btn").addEventListener("click", closeGame);
     document.getElementById("fullscreen-btn").addEventListener("click", () => gameFrame.requestFullscreen?.());
     document.getElementById("newtab-btn").addEventListener("click", () => {
-      if (currentGame) window.open(currentGame.link, "_blank");
+      if (currentGame) {
+        const url = currentGame.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
+        window.open(url, "_blank");
+      }
     });
     document.getElementById("fav-btn").addEventListener("click", () => {
       if (currentGame) {
-        if (!favorites.includes(currentGame.title)) {
-          favorites.push(currentGame.title);
-          localStorage.setItem("frosts-favorites", JSON.stringify(favorites));
+        const index = favorites.findIndex(f => f.id === currentGame.id);
+        if (index === -1) {
+          favorites.push({id: currentGame.id, name: currentGame.name});
+          localStorage.setItem("lunar-favorites", JSON.stringify(favorites));
           showToast("Added to favorites!");
         } else {
           showToast("Already in favorites!");
         }
         updateFavBtn();
+        renderGames();
       }
     });
-
-    searchInput.addEventListener("input", renderGames);
-
     document.getElementById("clear-favorites").addEventListener("click", () => {
       favorites = [];
-      localStorage.setItem("frosts-favorites", "[]");
+      localStorage.setItem("lunar-favorites", "[]");
       showToast("Favorites cleared!");
+      renderGames();
       document.getElementById("settings-modal").classList.remove("active");
     });
-
     document.getElementById("notification-close").addEventListener("click", () => {
-      notification.classList.remove("show");
+      document.getElementById("notification").classList.remove("show");
+    });
+    searchInput.addEventListener("input", renderGames);
+    
+    document.getElementById("rain-enabled").addEventListener("change", (e) => {
+      document.getElementById("rain").style.display = e.target.checked ? "block" : "none";
     });
 
-const loadingMessages = ["Loading games...", "Adding modules...", "Starting engines...", "Preparing launch...", "Almost ready..."];
-    let msgIndex = 0;
+    // Close welcome popup
+    document.getElementById("close-welcome").addEventListener("click", () => {
+      document.getElementById("v2-welcome").style.display = "none";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      const cards = document.querySelectorAll(".home-card");
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const angleX = (e.clientX - (rect.left + rect.width / 2)) / 20;
+        const angleY = (e.clientY - (rect.top + rect.height / 2)) / 20;
+        card.style.transform = `perspective(1000px) rotateX(${-angleY}deg) rotateY(${angleX}deg)`;
+      });
+    });
+
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+    createRain();
     
+    const loadingMessages = ["Loading games...", "Fetching from CDN...", "Preparing launch...", "Almost ready..."];
+    let msgIndex = 0;
     const loaderText = document.getElementById("loader-text");
     const msgInterval = setInterval(() => {
       loaderText.textContent = loadingMessages[msgIndex];
       msgIndex = (msgIndex + 1) % loadingMessages.length;
     }, 800);
-
-    document.getElementById("currentYear").textContent = new Date().getFullYear();
-    createRain();
-    renderGenres();
-    renderGames();
-
-    // V2 Popup - shown by default
-    document.getElementById("close-v2-popup").addEventListener("click", () => {
-      document.getElementById("v2-popup").style.display = "none";
-    });
-
-    // Show games function
-    window.showGames = function() {
-      document.getElementById("home-cards").style.display = "none";
-    };
-
-    setTimeout(() => {
+    
+    fetchZones().then(() => {
       clearInterval(msgInterval);
       document.getElementById("loading-screen").classList.add("hidden");
-    }, 2400);
+    }).catch(err => {
+      console.error(err);
+      clearInterval(msgInterval);
+      document.getElementById("loading-screen").classList.add("hidden");
+      gamesContainer.innerHTML = "<p>Error loading games. Please refresh.</p>";
+    });
   </script>
 </body>
 </html>
