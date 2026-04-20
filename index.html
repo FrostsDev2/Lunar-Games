@@ -579,11 +579,11 @@
       padding: 3rem 4rem;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.15s ease-out, border-color 0.3s, box-shadow 0.3s;
       min-width: 220px;
+      transform-style: preserve-3d;
     }
     .home-card:hover {
-      transform: translateY(-8px);
       border-color: #a78bfa;
       box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
     }
@@ -597,9 +597,15 @@
       animation: float 3s ease-in-out infinite;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
+@keyframes float {
+      0% { transform: translateY(0); }
       50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      0% { filter: drop-shadow(0 0 25px rgba(167, 139, 250, 0.6)); }
+      100% { filter: drop-shadow(0 0 45px rgba(167, 139, 250, 1)); }
     }
 
     .home-brand {
@@ -639,8 +645,9 @@
   </div>
 
   <header class="app-header">
-    <div class="brand"><span class="brand-lunar">LUNAR</span><span class="brand-games">GAMES</span></div>
+    <div class="brand"><img src="lunar.png" style="width: 32px; height: auto; margin-right: 8px;"><span class="brand-lunar">LUNAR</span><span class="brand-games">GAMES</span></div>
     <div class="header-actions">
+      <button class="btn" id="stealth-btn" onclick="openStealthMode()"><i class="fas fa-user-secret"></i> Open In Stealth Mode</button>
       <button class="btn" id="tos-btn"><i class="fas fa-file-contract"></i> Terms</button>
       <button class="btn" id="settings-btn"><i class="fas fa-cog"></i></button>
     </div>
@@ -706,6 +713,14 @@
               <span><i class="fas fa-infinity"></i> Infinite Scroll</span>
               <input type="checkbox" id="infinite-scroll" checked>
             </label>
+            <label class="setting-row">
+              <span><i class="fas fa-star"></i> Show Game Ratings</span>
+              <input type="checkbox" id="show-ratings" checked>
+            </label>
+            <label class="setting-row">
+              <span><i class="fas fa-clock"></i> Show Play Time</span>
+              <input type="checkbox" id="show-playtime" checked>
+            </label>
           </div>
         </div>
 
@@ -725,6 +740,18 @@
               <span><i class="fas fa-compress"></i> Compact View</span>
               <input type="checkbox" id="compact-view">
             </label>
+            <label class="setting-row">
+              <span><i class="fas fa-expand"></i> Fullscreen Games</span>
+              <input type="checkbox" id="fullscreen-games" checked>
+            </label>
+            <label class="setting-row">
+              <span><i class="fas fa-sort-amount-up"></i> Sort Games By</span>
+              <select class="setting-select" id="sort-games">
+                <option value="title">Title</option>
+                <option value="newest">Newest</option>
+                <option value="popular">Popular</option>
+              </select>
+            </label>
           </div>
         </div>
 
@@ -743,6 +770,25 @@
           </select>
         </div>
 
+        <!-- Audio Settings -->
+        <div>
+          <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Audio</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <label class="setting-row">
+              <span><i class="fas fa-volume-up"></i> Master Volume</span>
+              <input type="range" id="master-volume" min="0" max="100" value="100" style="width: 100px;">
+            </label>
+            <label class="setting-row">
+              <span><i class="fas fa-music"></i> Background Music</span>
+              <input type="checkbox" id="bg-music" checked>
+            </label>
+            <label class="setting-row">
+              <span><i class="fas fa-volume-down"></i> Game Sounds</span>
+              <input type="checkbox" id="game-sounds" checked>
+            </label>
+          </div>
+        </div>
+
         <!-- Data -->
         <div>
           <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Data</h3>
@@ -751,6 +797,25 @@
             <button class="btn" id="import-favorites" style="flex: 1;"><i class="fas fa-upload"></i> Import</button>
           </div>
           <button class="btn" id="clear-favorites" style="width: 100%; margin-top: 0.5rem; color: #ef4444;"><i class="fas fa-trash"></i> Clear All Favorites</button>
+        </div>
+
+        <!-- Performance -->
+        <div>
+          <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Performance</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <label class="setting-row">
+              <span><i class="fas fa-tachometer-alt"></i> Enable Hardware Accel</span>
+              <input type="checkbox" id="hardware-accel" checked>
+            </label>
+            <label class="setting-row">
+              <span><i class="fas fa-images"></i> Lazy Load Images</span>
+              <input type="checkbox" id="lazy-load" checked>
+            </label>
+            <label class="setting-row">
+              <span><i class="fas fa-ban"></i> Clear Cache</span>
+              <button class="btn" style="padding: 4px 8px; font-size: 0.75rem;">Clear</button>
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -875,7 +940,7 @@
   <!-- V2 POPUP -->
   <div id="v2-popup" class="modal active" style="background: rgba(0,0,0,0.9);">
     <div class="modal-content" style="text-align: center; max-width: 480px;">
-      <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌙</div>
+      <img src="lunar.png" style="width: 80px; height: auto; margin-bottom: 0.5rem; filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.6));">
       <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">
         <span style="color: #a78bfa;">Lunar</span> Games <span style="font-size: 0.8rem; background: #a78bfa; color: #000; padding: 2px 8px; border-radius: 8px; vertical-align: middle;">V2</span>
       </h2>
@@ -889,6 +954,7 @@
           <li>Animated rain background</li>
           <li>Smoother animations</li>
           <li>Faster loading</li>
+          <li>Add Stealth Mode for sight! Teachers now cant see it!</li>
         </ul>
       </div>
 
@@ -904,13 +970,9 @@
   </div>
 
   <!-- HOME CARDS -->
-  <div id="home-cards" class="modal active" style="background: var(--bg-dark); display: flex; align-items: center; justify-content: center;">
+  <div id="home-cards" class="modal active" style="display: flex; align-items: center; justify-content: center;">
     <div style="text-align: center;">
-      <div class="home-logo">
-        <svg width="90" height="90" viewBox="0 0 100 100">
-          <path d="M50 5 A45 45 0 1 1 50 95 A35 35 0 1 0 50 5" fill="#a78bfa"/>
-        </svg>
-      </div>
+      <img src="lunar.png" class="home-logo" style="width: 120px; height: auto; margin: 0 auto 1rem; filter: drop-shadow(0 0 25px rgba(167, 139, 250, 0.6)); animation: glow 2s ease-in-out infinite alternate;">
       <div class="home-brand">
         <span class="brand-lunar">LUNAR</span><span class="brand-games">GAMES</span>
       </div>
@@ -920,10 +982,10 @@
           <div style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">GAMES</div>
           <div style="font-size: 0.85rem; color: var(--text-muted);">Play online games</div>
         </div>
-        <div class="home-card" id="proxy-card">
+        <div class="home-card" id="proxy-card" onclick="openProxy()">
           <div style="font-size: 3rem; margin-bottom: 0.75rem;"><i class="fas fa-globe"></i></div>
-          <div style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">PROXY</div>
-          <div style="font-size: 0.85rem; color: #fbbf24;">Coming Soon</div>
+          <div style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">LUNAR OS</div>
+          <div style="font-size: 0.85rem; color: #a78bfa;">Stealth Mode</div>
         </div>
       </div>
     </div>
@@ -1130,15 +1192,33 @@
       currentGame = { link, title };
       gameFrame.src = link;
       gameMenu.classList.add("active");
-      document.title = title + " - IXL | Dashboard";
       updateFavBtn();
     }
 
     function closeGame() {
       gameMenu.classList.remove("active");
       gameFrame.src = "";
-      document.title = "IXL | Dashboard";
     }
+
+    function openProxy() {
+      window.open("os.html", "_blank");
+    }
+
+    function openStealthMode() {
+      window.open("index.html", "_blank");
+    }
+
+    document.addEventListener("mousemove", (e) => {
+      const cards = document.querySelectorAll(".home-card");
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const cardX = rect.left + rect.width / 2;
+        const cardY = rect.top + rect.height / 2;
+        const angleX = (e.clientX - cardX) / 20;
+        const angleY = (e.clientY - cardY) / 20;
+        card.style.transform = `perspective(1000px) rotateX(${-angleY}deg) rotateY(${angleX}deg)`;
+      });
+    });
 
     function updateFavBtn() {
       const btn = document.getElementById("fav-btn");
