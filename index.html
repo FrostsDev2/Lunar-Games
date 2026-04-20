@@ -1205,8 +1205,45 @@
     }
 
     function openStealthMode() {
-      window.open("https://lunarr-os.vercel.app", "_blank");
-    }
+  const newTab = window.open("about:blank", "_blank");
+
+  if (!newTab) {
+    alert("Popup blocked!");
+    return;
+  }
+
+  newTab.document.write(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Lunar OS</title>
+        <link rel="icon" href="lunar.png">
+        <style>
+          body {
+            margin: 0;
+            background: #0a0a0f;
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+          }
+        </style>
+      </head>
+      <body>
+        <h2>Loading Lunar OS...</h2>
+        <script>
+          setTimeout(() => {
+            window.location.href = "https://lunar-os.verse.app";
+          }, 500);
+        <\/script>
+      </body>
+    </html>
+  `);
+
+  newTab.document.close();
+}
 
     document.addEventListener("mousemove", (e) => {
       const cards = document.querySelectorAll(".home-card");
