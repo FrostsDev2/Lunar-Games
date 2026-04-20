@@ -1,8 +1,8 @@
 # Project Lunar
 # Links
 (Previews)
-[Link One](https://frostsdev2.github.io/frosts-games-site) | 
-[Link Two](https://frostsdev2.github.io/gfiles/ ) 
+[Link One](https://lunar-gamess.vercel.app/) | 
+[Link Two](https://frostsinc.vercel.app/) 
 ---
 # LUNAR GAMES VERSION 1.2
 - Added ruffle player that loads games on click (saves space and faster)
