@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Lunar Games | gn-math</title>
+  <link rel="icon" id="favicon" href="https://cdn.jsdelivr.net/gh/freebuisness/gn-math-DONTDMCA@main/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #0a0a0f;
+      --surface: #12121a;
+      --surface-elevated: #1a1a24;
+      --primary: #7c3aed;
+      --primary-light: #a78bfa;
+      --accent: #06b6d4;
+      --text: #f4f4f5;
+      --text-muted: #71717a;
+      --border: #27272a;
+      --glass: rgba(18, 18, 26, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text);
+      font-family: 'Outfit', system-ui, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .rain-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .rain-drop {
+      position: absolute;
+      width: 2px;
+      height: 24px;
+      background: linear-gradient(transparent, rgba(167, 139, 250, 0.6));
+      border-radius: 2px;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(100vh); }
+    }
+
+    .rain-glow {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 350px;
+      background: linear-gradient(to top, rgba(167, 139, 250, 0.18), transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .moon-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .loader-text {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-lunar {
+      color: #a78bfa;
+      text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+    }
+
+    .brand-games {
+      color: var(--text);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 1.1rem;
+      border-radius: 12px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .btn i {
+      font-size: 0.9rem;
+      color: var(--primary-light);
+    }
+
+    .btn:hover i {
+      color: white;
+    }
+
+    .main-wrapper {
+      display: flex;
+      padding: 2rem;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+
+    .genre-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .genre-item:hover {
+      background: var(--surface-elevated);
+      color: var(--text);
+    }
+
+    .genre-item.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .genre-item i {
+      width: 18px;
+      font-size: 0.85rem;
+    }
+
+    .genre-item .count {
+      margin-left: auto;
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+
+    .content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    #gameSearch {
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 2.75rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    #gameSearch:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    }
+
+    #gameSearch::placeholder {
+      color: var(--text-muted);
+    }
+
+    .games-count {
+      background: var(--surface-elevated);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .game-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: var(--surface-elevated);
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .game-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .game-genres {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .play-btn {
+      background: var(--primary);
+      border: none;
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 0.75rem;
+    }
+
+    .play-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer i {
+      color: #ef4444;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 85vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h2 {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+      color: var(--text);
+    }
+
+    #game-menu {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 2000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    #game-menu.active {
+      display: flex;
+    }
+
+    #game-frame {
+      width: min(1100px, 95vw);
+      height: min(650px, 75vh);
+      border: none;
+      border-radius: 16px;
+      background: black;
+    }
+
+    .menu-buttons {
+      margin-top: 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .menu-btn {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: white;
+      padding: 0.7rem 1.25rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .menu-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    #notification {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--surface-elevated);
+      border-left: 3px solid var(--primary);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.9rem;
+    }
+
+    #notification.show {
+      display: flex;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .hidden { display: none !important; }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: var(--surface-elevated);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .setting-row:hover {
+      background: var(--border);
+    }
+    .setting-row span {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.9rem;
+    }
+    .setting-row i {
+      width: 18px;
+      color: #a78bfa;
+    }
+    .setting-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #a78bfa;
+      cursor: pointer;
+    }
+    .setting-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--surface);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a78bfa;
+    }
+
+    .home-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 3rem 4rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease-out, border-color 0.3s, box-shadow 0.3s;
+      min-width: 220px;
+      transform-style: preserve-3d;
+    }
+    .home-card:hover {
+      border-color: #a78bfa;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+    .home-card i {
+      color: #a78bfa;
+    }
+
+    .home-logo {
+      margin: 0 auto 1rem;
+      filter: drop-shadow(0 0 25px rgba(167, 139, 250, 0.6));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0% { filter: drop-shadow(0 0 25px rgba(167, 139, 250, 0.6)); }
+      100% { filter: drop-shadow(0 0 45px rgba(167, 139, 250, 1)); }
+    }
+
+    .home-brand {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .home-brand .brand-lunar {
+      color: #a78bfa;
+      text-shadow: 0 0 25px rgba(167, 139, 250, 0.6);
+    }
+
+    .home-brand .brand-games {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="rain-container" id="rain"></div>
+  <div class="rain-glow"></div>
+
+  <div id="loading-screen">
+    <div style="text-align: center;">
+      <div class="moon-logo">
+        <svg width="80" height="80" viewBox="0 0 100 100">
+          <path d="M50 5 A45 45 0 1 1 50 95 A35 35 0 1 0 50 5" fill="#8b5cf6"/>
+        </svg>
+      </div>
+      <div class="loader-text" id="loader-text">Loading games...</div>
+    </div>
+  </div>
+
+  <header class="app-header">
+    <div class="brand"><img src="https://cdn.jsdelivr.net/gh/freebuisness/gn-math-DONTDMCA@main/lunar.png" style="width: 32px; height: auto; margin-right: 8px;"><span class="brand-lunar">LUNAR</span><span class="brand-games">GAMES</span></div>
+    <div class="header-actions">
+      <button class="btn" id="stealth-btn"><i class="fas fa-user-secret"></i> Stealth Mode</button>
+      <button class="btn" id="tos-btn"><i class="fas fa-file-contract"></i> Terms</button>
+      <button class="btn" id="settings-btn"><i class="fas fa-cog"></i></button>
+    </div>
+  </header>
+
+  <div class="main-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Explore</div>
+        <div class="genre-list" id="genre-list"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Stats</div>
+        <div class="genre-item" style="cursor: default;">
+          <i class="fas fa-fire" style="color: #f97316;"></i>
+          <span>Trending</span>
+        </div>
+        <div class="genre-item" style="cursor: default; margin-top: 0.5rem;">
+          <i class="fas fa-heart" style="color: #ef4444;"></i>
+          <span id="favorites-count">0 Favorites</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="search-bar">
+        <div class="search-wrapper">
+          <i class="fas fa-search"></i>
+          <input type="text" id="gameSearch" placeholder="Search games...">
+        </div>
+        <div class="games-count" id="totalGames">0 Games</div>
+      </div>
+
+      <div class="games-grid" id="games-container"></div>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <p>Lunar Games &copy; <span id="currentYear"></span> — made with <i class="fas fa-heart"></i></p>
+  </footer>
+
+  <div id="settings-modal" class="modal">
+    <div class="modal-content" style="max-width: 520px;">
+      <div class="modal-header">
+        <h2><i class="fas fa-cog"></i> Settings</h2>
+        <button class="close-btn" id="close-settings">&times;</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <div>
+          <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">General</h3>
+          <label class="setting-row">
+            <span><i class="fas fa-heart"></i> Auto-save Favorites</span>
+            <input type="checkbox" id="auto-save-favorites" checked>
+          </label>
+          <label class="setting-row">
+            <span><i class="fas fa-cloud-rain"></i> Rain Background</span>
+            <input type="checkbox" id="rain-enabled" checked>
+          </label>
+          <label class="setting-row">
+            <span><i class="fas fa-expand"></i> Fullscreen Games</span>
+            <input type="checkbox" id="fullscreen-games" checked>
+          </label>
+        </div>
+        <div>
+          <h3 style="font-size: 0.8rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Data</h3>
+          <button class="btn" id="clear-favorites" style="width: 100%; margin-top: 0.5rem; color: #ef4444;"><i class="fas fa-trash"></i> Clear All Favorites</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tos-modal" class="modal">
+    <div class="modal-content" style="max-width: 680px;">
+      <div class="modal-header">
+        <h2><i class="fas fa-file-contract"></i> Terms of Service</h2>
+        <button class="close-btn" id="close-tos">&times;</button>
+      </div>
+      <div style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.7;">
+        <p>By using Lunar Games, you agree to our terms. Games are property of their respective owners.</p>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+        <button class="btn" id="tos-disagree" style="color: #ef4444;">Disagree</button>
+        <button class="btn" id="tos-agree">Agree</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-menu">
+    <iframe id="game-frame" allowfullscreen></iframe>
+    <div class="menu-buttons">
+      <button class="menu-btn" id="fav-btn"><i class="fas fa-heart"></i> Favorite</button>
+      <button class="menu-btn" id="fullscreen-btn"><i class="fas fa-expand"></i> Fullscreen</button>
+      <button class="menu-btn" id="newtab-btn"><i class="fas fa-external-link-alt"></i> New Tab</button>
+      <button class="menu-btn" id="exit-btn"><i class="fas fa-times"></i> Exit</button>
+    </div>
+  </div>
+
+  <div id="notification">
+    <span id="notification-text"></span>
+    <button class="close-btn" id="notification-close" style="font-size: 1rem;">&times;</button>
+  </div>
+
+  <div id="home-cards" class="modal active" style="display: flex;">
+    <div style="text-align: center;">
+      <img src="https://cdn.jsdelivr.net/gh/freebuisness/gn-math-DONTDMCA@main/lunar.png" class="home-logo" style="width: 120px; height: auto; margin: 0 auto 1rem;">
+      <div class="home-brand">
+        <span class="brand-lunar">LUNAR</span><span class="brand-games">GAMES</span>
+      </div>
+      <div style="display: flex; gap: 2rem; padding: 2rem;">
+        <div class="home-card" id="games-card" onclick="showGames()">
+          <div style="font-size: 3rem; margin-bottom: 0.75rem;"><i class="fas fa-gamepad"></i></div>
+          <div style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">GAMES</div>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">Play online games</div>
+        </div>
+        <div class="home-card" id="proxy-card" onclick="openProxy()">
+          <div style="font-size: 3rem; margin-bottom: 0.75rem;"><i class="fas fa-globe"></i></div>
+          <div style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">LUNAR OS</div>
+          <div style="font-size: 0.85rem; color: #a78bfa;">Stealth Mode</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // CDN Configuration
+    const zonesurls = [
+      "https://cdn.jsdelivr.net/gh/freebuisness/assets@main/zones.json",
+      "https://cdn.jsdelivr.net/gh/freebuisness/assets@latest/zones.json",
+      "https://cdn.jsdelivr.net/gh/freebuisness/assets@master/zones.json",
+      "https://cdn.jsdelivr.net/gh/freebuisness/assets/zones.json"
+    ];
+    const coverURL = "https://cdn.jsdelivr.net/gh/freebuisness/covers@main";
+    const htmlURL = "https://cdn.jsdelivr.net/gh/freebuisness/html@main";
+    
+    let zones = [];
+    let currentGenre = "All";
+    let currentGame = null;
+    let favorites = JSON.parse(localStorage.getItem("lunar-favorites") || "[]");
+    let allTags = [];
+
+    const gamesContainer = document.getElementById("games-container");
+    const genreList = document.getElementById("genre-list");
+    const searchInput = document.getElementById("gameSearch");
+    const gameMenu = document.getElementById("game-menu");
+    const gameFrame = document.getElementById("game-frame");
+
+    function createRain() {
+      const container = document.getElementById("rain");
+      const dropCount = 120;
+      for (let i = 0; i < dropCount; i++) {
+        const drop = document.createElement("div");
+        drop.className = "rain-drop";
+        drop.style.left = Math.random() * 100 + "%";
+        drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + "s";
+        drop.style.animationDelay = Math.random() * 2 + "s";
+        drop.style.opacity = Math.random() * 0.4 + 0.4;
+        container.appendChild(drop);
+      }
+    }
+
+    async function fetchZones() {
+      let zonesURL = zonesurls[Math.floor(Math.random() * zonesurls.length)];
+      
+      try {
+        let sharesponse = await fetch("https://api.github.com/repos/freebuisness/assets/commits?t="+Date.now());
+        if (sharesponse && sharesponse.status === 200) {
+          let shajson = await sharesponse.json();
+          let sha = shajson[0]['sha'];
+          if (sha) {
+            zonesURL = `https://cdn.jsdelivr.net/gh/freebuisness/assets@${sha}/zones.json`;
+          }
+        }
+      } catch (error) {
+        try {
+          let secondarysharesponse = await fetch("https://raw.githubusercontent.com/freebuisness/xml/refs/heads/main/sha.txt?t="+Date.now());
+          if (secondarysharesponse && secondarysharesponse.status === 200) {
+            let sha = (await secondarysharesponse.text()).trim();
+            if (sha) {
+              zonesURL = `https://cdn.jsdelivr.net/gh/freebuisness/assets@${sha}/zones.json`;
+            }
+          }
+        } catch(error) {}
+      }
+      
+      const response = await fetch(zonesURL+"?t="+Date.now());
+      const json = await response.json();
+      zones = json;
+      
+      // Collect all tags
+      const tagSet = new Set();
+      for (const zone of zones) {
+        if (Array.isArray(zone.special)) {
+          zone.special.forEach(tag => tagSet.add(tag));
+        }
+      }
+      allTags = Array.from(tagSet);
+      
+      renderGenres();
+      renderGames();
+    }
+
+    function renderGenres() {
+      const genres = [
+        {name: "All", icon: "fa-globe", count: zones.length},
+        {name: "New", icon: "fa-sparkles", count: zones.filter(z => z.new).length},
+        ...allTags.slice(0, 8).map(tag => ({name: tag, icon: "fa-tag", count: zones.filter(z => z.special?.includes(tag)).length}))
+      ];
+      
+      genreList.innerHTML = genres.map(g => `
+        <div class="genre-item ${g.name === currentGenre ? 'active' : ''}" data-genre="${g.name}">
+          <i class="fas ${g.icon}"></i>
+          <span>${g.name}</span>
+          <span class="count">${g.count}</span>
+        </div>
+      `).join("");
+
+      genreList.querySelectorAll(".genre-item").forEach(item => {
+        item.addEventListener("click", () => {
+          currentGenre = item.dataset.genre;
+          renderGenres();
+          renderGames();
+        });
+      });
+    }
+
+    function renderGames() {
+      let filtered = [...zones];
+      
+      if (currentGenre === "New") {
+        filtered = zones.filter(z => z.new);
+      } else if (currentGenre !== "All") {
+        filtered = zones.filter(z => z.special?.includes(currentGenre));
+      }
+      
+      const search = searchInput.value.toLowerCase();
+      if (search) {
+        filtered = filtered.filter(z => z.name.toLowerCase().includes(search));
+      }
+
+      gamesContainer.innerHTML = filtered.map((zone, i) => `
+        <div class="game-card" data-index="${i}" style="animation: fadeIn 0.3s ease ${i * 0.03}s both;">
+          <img class="card-image" src="${zone.cover.replace('{COVER_URL}', coverURL)}" alt="${zone.name}" onerror="this.style.display='none'">
+          <div class="card-content">
+            <div class="game-title">${zone.name}</div>
+            <div class="game-genres">${zone.special?.slice(0, 2).join(" · ") || "Game"}</div>
+            <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("totalGames").textContent = `${filtered.length} Games`;
+      document.getElementById("favorites-count").textContent = `${favorites.length} Favorites`;
+
+      gamesContainer.querySelectorAll(".game-card").forEach(card => {
+        card.addEventListener("click", () => {
+          const zone = filtered[card.dataset.index];
+          openGame(zone);
+        });
+      });
+    }
+
+    function openGame(zone) {
+      currentGame = zone;
+      
+      if (zone.url.startsWith("http")) {
+        window.open(zone.url, "_blank");
+        return;
+      }
+      
+      const url = zone.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
+      fetch(url+"?t="+Date.now()).then(response => response.text()).then(html => {
+        gameFrame.contentDocument.open();
+        gameFrame.contentDocument.write(html);
+        gameFrame.contentDocument.close();
+        gameMenu.classList.add("active");
+        updateFavBtn();
+      }).catch(error => alert("Failed to load zone: " + error));
+    }
+
+    function closeGame() {
+      gameMenu.classList.remove("active");
+      gameFrame.src = "";
+    }
+
+    function openProxy() {
+      const newTab = window.open("about:blank", "_blank");
+      if (newTab) {
+        newTab.document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head><title>Lunar OS</title><link rel="icon" href="https://cdn.jsdelivr.net/gh/freebuisness/gn-math-DONTDMCA@main/favicon.png"></head>
+            <body style="margin:0"><script>window.location.href="https://lunarr-os.vercel.app";<\/script></body>
+          </html>
+        `);
+        newTab.document.close();
+      } else {
+        window.open("https://lunarr-os.vercel.app", "_blank");
+      }
+    }
+
+    function openStealthMode() {
+      openProxy();
+    }
+
+    function updateFavBtn() {
+      const btn = document.getElementById("fav-btn");
+      const isFav = favorites.some(f => f.id === currentGame?.id);
+      btn.innerHTML = isFav ? '<i class="fas fa-heart"></i> Favorited' : '<i class="fas fa-heart"></i> Favorite';
+    }
+
+    function showToast(message) {
+      document.getElementById("notification-text").textContent = message;
+      document.getElementById("notification").classList.add("show");
+      setTimeout(() => document.getElementById("notification").classList.remove("show"), 3000);
+    }
+
+    window.showGames = function() {
+      document.getElementById("home-cards").style.display = "none";
+    };
+
+    // Event Listeners
+    document.getElementById("settings-btn").addEventListener("click", () => {
+      document.getElementById("settings-modal").classList.add("active");
+    });
+    document.getElementById("close-settings").addEventListener("click", () => {
+      document.getElementById("settings-modal").classList.remove("active");
+    });
+    document.getElementById("tos-btn").addEventListener("click", () => {
+      document.getElementById("tos-modal").classList.add("active");
+    });
+    document.getElementById("close-tos").addEventListener("click", () => {
+      document.getElementById("tos-modal").classList.remove("active");
+    });
+    document.getElementById("tos-agree").addEventListener("click", () => {
+      document.getElementById("tos-modal").classList.remove("active");
+      showToast("Terms accepted!");
+    });
+    document.getElementById("tos-disagree").addEventListener("click", () => {
+      window.location.href = "https://google.com";
+    });
+    document.getElementById("stealth-btn").addEventListener("click", openStealthMode);
+    document.getElementById("exit-btn").addEventListener("click", closeGame);
+    document.getElementById("fullscreen-btn").addEventListener("click", () => gameFrame.requestFullscreen?.());
+    document.getElementById("newtab-btn").addEventListener("click", () => {
+      if (currentGame) {
+        const url = currentGame.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
+        window.open(url, "_blank");
+      }
+    });
+    document.getElementById("fav-btn").addEventListener("click", () => {
+      if (currentGame) {
+        const index = favorites.findIndex(f => f.id === currentGame.id);
+        if (index === -1) {
+          favorites.push({id: currentGame.id, name: currentGame.name});
+          localStorage.setItem("lunar-favorites", JSON.stringify(favorites));
+          showToast("Added to favorites!");
+        } else {
+          showToast("Already in favorites!");
+        }
+        updateFavBtn();
+        renderGames();
+      }
+    });
+    document.getElementById("clear-favorites").addEventListener("click", () => {
+      favorites = [];
+      localStorage.setItem("lunar-favorites", "[]");
+      showToast("Favorites cleared!");
+      renderGames();
+      document.getElementById("settings-modal").classList.remove("active");
+    });
+    document.getElementById("notification-close").addEventListener("click", () => {
+      document.getElementById("notification").classList.remove("show");
+    });
+    searchInput.addEventListener("input", renderGames);
+    
+    document.getElementById("rain-enabled").addEventListener("change", (e) => {
+      document.getElementById("rain").style.display = e.target.checked ? "block" : "none";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      const cards = document.querySelectorAll(".home-card");
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const angleX = (e.clientX - (rect.left + rect.width / 2)) / 20;
+        const angleY = (e.clientY - (rect.top + rect.height / 2)) / 20;
+        card.style.transform = `perspective(1000px) rotateX(${-angleY}deg) rotateY(${angleX}deg)`;
+      });
+    });
+
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+    createRain();
+    
+    const loadingMessages = ["Loading games...", "Fetching from CDN...", "Preparing launch...", "Almost ready..."];
+    let msgIndex = 0;
+    const loaderText = document.getElementById("loader-text");
+    const msgInterval = setInterval(() => {
+      loaderText.textContent = loadingMessages[msgIndex];
+      msgIndex = (msgIndex + 1) % loadingMessages.length;
+    }, 800);
+    
+    fetchZones().then(() => {
+      clearInterval(msgInterval);
+      document.getElementById("loading-screen").classList.add("hidden");
+    }).catch(err => {
+      console.error(err);
+      clearInterval(msgInterval);
+      document.getElementById("loading-screen").classList.add("hidden");
+      gamesContainer.innerHTML = "<p>Error loading games. Please refresh.</p>";
+    });
+  </script>
+</body>
+</html>
