@@ -1,20 +1,27 @@
-<script>
-function openSite() {
-  var win = window.open();
-  var url = "https://example.com"; // Your target URL
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auto Open</title>
+  <script>
+    function openSite() {
+      var win = window.open();
+      var url = "https://example.com";
 
-  var iframe = win.document.createElement('iframe');
-  iframe.style.width = "100%";
-  iframe.style.height = "100%";
-  iframe.style.border = "none";
-  iframe.style.position = "fixed";
-  iframe.style.top = "0";
-  iframe.style.left = "0";
-  iframe.src = url;
+      var iframe = win.document.createElement('iframe');
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.border = "none";
+      iframe.style.position = "fixed";
+      iframe.style.top = "0";
+      iframe.style.left = "0";
+      iframe.src = url;
 
-  win.document.body.appendChild(iframe);
-}
+      win.document.body.appendChild(iframe);
+    }
 
-// Run automatically when page loads
-window.onload = openSite;
-</script>
+    window.onload = openSite;
+  </script>
+</head>
+<body>
+</body>
+</html>
