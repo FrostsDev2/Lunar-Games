@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>Lunar Launcher</title>
 
+<!-- Tab icon -->
+<link rel="icon" type="image/png" href="lunar.png">
+
 <style>
   body {
     margin: 0;
@@ -14,6 +17,16 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+  }
+
+  /* Faint background logo */
+  .bg-logo {
+    position: fixed;
+    width: 600px;
+    opacity: 0.06;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(0.5px);
   }
 
   .container {
@@ -43,12 +56,12 @@
     transform: scale(1.05);
   }
 
-  /* Glow that follows mouse */
+  /* Mouse-follow glow */
   button::before {
     content: "";
     position: absolute;
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     background: radial-gradient(circle, rgba(138,44,255,0.6) 0%, transparent 70%);
     transform: translate(-50%, -50%);
     pointer-events: none;
@@ -57,7 +70,7 @@
     transition: top 0.05s linear, left 0.05s linear;
   }
 
-  /* Ripple effect */
+  /* Ripple */
   .ripple {
     position: absolute;
     border-radius: 50%;
@@ -119,7 +132,7 @@
     const rainContainer = document.querySelector('.rain');
     const button = document.querySelector('button');
 
-    // Rain generator
+    // Rain
     for (let i = 0; i < 150; i++) {
       let drop = document.createElement('div');
       drop.classList.add('drop');
@@ -129,14 +142,14 @@
       rainContainer.appendChild(drop);
     }
 
-    // Mouse-follow glow
+    // Mouse glow follow
     button.addEventListener('mousemove', e => {
       const rect = button.getBoundingClientRect();
       button.style.setProperty('--x', (e.clientX - rect.left) + 'px');
       button.style.setProperty('--y', (e.clientY - rect.top) + 'px');
     });
 
-    // Ripple click effect
+    // Ripple
     button.addEventListener('click', function(e) {
       const rect = button.getBoundingClientRect();
       const ripple = document.createElement('span');
@@ -149,9 +162,7 @@
 
       button.appendChild(ripple);
 
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
+      setTimeout(() => ripple.remove(), 600);
     });
   }
 </script>
@@ -159,6 +170,9 @@
 </head>
 
 <body>
+
+<!-- Background watermark logo -->
+<img src="lunar.png" class="bg-logo" style="top:50%;left:50%;transform:translate(-50%,-50%);">
 
 <div class="rain"></div>
 
