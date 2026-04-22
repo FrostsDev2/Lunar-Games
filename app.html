@@ -1038,19 +1038,7 @@
     }
 
     function openProxy() {
-      const newTab = window.open("about:blank", "_blank");
-      if (newTab) {
-        newTab.document.write(`
-          <!DOCTYPE html>
-          <html>
-            <head><title>Lunar OS</title><link rel="icon" href="lunar.png"></head>
-            <body style="margin:0"><script>window.location.href="https://lunarr-os.vercel.app";<\/script></body>
-          </html>
-        `);
-        newTab.document.close();
-      } else {
-        window.open("https://lunarr-os.vercel.app", "_blank");
-      }
+    <a href="https://lunarr-proxy.vercel.app" target="_blank">Link</a>
     }
 
     function openStealthMode() {
