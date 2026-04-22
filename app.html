@@ -844,6 +844,7 @@
           <div style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">GAMES</div>
           <div style="font-size: 0.85rem; color: var(--text-muted);">Play online games</div>
         </div>
+        <!-- PROXY CARD - Click triggers stealth mode directly -->
         <div class="home-card" id="proxy-card" onclick="openProxy()">
           <div style="font-size: 3rem; margin-bottom: 0.75rem;"><i class="fas fa-globe"></i></div>
           <div style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">LUNAR Proxy! (NEW)</div>
@@ -879,7 +880,7 @@
   <script>
     // CDN Configuration
     const zonesurls = [
-      "https://cdn.jsdelivr.net/gh/freebuisness/assets@main/zones.json",
+"https://cdn.jsdelivr.net/gh/freebuisness/assets@main/zones.json",
       "https://cdn.jsdelivr.net/gh/freebuisness/assets@latest/zones.json",
       "https://cdn.jsdelivr.net/gh/freebuisness/assets@master/zones.json",
       "https://cdn.jsdelivr.net/gh/freebuisness/assets/zones.json"
@@ -941,7 +942,6 @@
       const json = await response.json();
       zones = json;
       
-      // Collect all tags
       const tagSet = new Set();
       for (const zone of zones) {
         if (Array.isArray(zone.special)) {
@@ -1037,12 +1037,22 @@
       gameFrame.src = "";
     }
 
+    // STEALTH PROXY LOGIC
     function openProxy() {
-    <a href="https://lunarr-proxy.vercel.app" target="_blank">Link</a>
-    }
-
-    function openStealthMode() {
-      openProxy();
+      var win = window.open();
+      if (!win) {
+          alert("Pop-up blocked! Please allow pop-ups to open the proxy in stealth mode.");
+          return;
+      }
+      var url = "https://lunarr-proxy.vercel.app";
+      win.document.body.style.margin = "0";
+      win.document.body.style.height = "100vh";
+      var iframe = win.document.createElement('iframe');
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.border = "none";
+      iframe.src = url;
+      win.document.body.appendChild(iframe);
     }
 
     function updateFavBtn() {
@@ -1061,7 +1071,6 @@
       document.getElementById("home-cards").style.display = "none";
     };
 
-    // Event Listeners
     document.getElementById("settings-btn").addEventListener("click", () => {
       document.getElementById("settings-modal").classList.add("active");
     });
@@ -1119,7 +1128,6 @@
       document.getElementById("rain").style.display = e.target.checked ? "block" : "none";
     });
 
-    // Close welcome popup
     document.getElementById("close-welcome").addEventListener("click", () => {
       document.getElementById("v2-welcome").style.display = "none";
     });
