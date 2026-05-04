@@ -1,75 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lunar Games - Offline</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Final Goodbye... | Lunar</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      font-family: Arial, sans-serif;
-      color: white;
-      overflow: hidden;
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family: "Segoe UI", sans-serif;
     }
 
-    .card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      padding: 40px;
-      border-radius: 20px;
-      text-align: center;
-      max-width: 600px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.1);
+    body{
+        background: linear-gradient(to bottom, #090014, #140022, #1d0033);
+        overflow:hidden;
+        color:white;
+        height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        position:relative;
     }
 
-    h1 {
-      margin-top: 0;
-      font-size: 2.5rem;
-      color: #c084fc;
+    /* Snow */
+    .snow{
+        position:absolute;
+        width:4px;
+        height:4px;
+        background:white;
+        border-radius:50%;
+        opacity:0.8;
+        animation: fall linear infinite;
     }
 
-    p {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      color: #e2e8f0;
+    @keyframes fall{
+        from{
+            transform:translateY(-10vh);
+        }
+        to{
+            transform:translateY(110vh);
+        }
     }
 
-    .emoji {
-      font-size: 1.5rem;
+    .container{
+        width:90%;
+        max-width:850px;
+        background: rgba(20, 0, 40, 0.65);
+        border:1px solid rgba(255,255,255,0.08);
+        backdrop-filter: blur(10px);
+        padding:50px;
+        border-radius:24px;
+        box-shadow: 0 0 40px rgba(128, 0, 255, 0.25);
+        text-align:center;
+        z-index:2;
     }
 
-    .footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      opacity: 0.7;
+    h1{
+        font-size:3rem;
+        margin-bottom:25px;
+        color:#d8b4ff;
+        text-shadow:0 0 20px rgba(200,120,255,0.5);
     }
-  </style>
+
+    p{
+        font-size:1.1rem;
+        line-height:1.9;
+        color:#f0e6ff;
+        margin-bottom:18px;
+    }
+
+    .team{
+        margin-top:35px;
+        color:#cdafff;
+    }
+
+    .footer{
+        margin-top:45px;
+        font-size:1.4rem;
+        color:#ffffff;
+        text-shadow:0 0 15px rgba(255,255,255,0.35);
+    }
+
+    .glow{
+        color:#b86cff;
+    }
+
+    @media(max-width:700px){
+        h1{
+            font-size:2.2rem;
+        }
+
+        .container{
+            padding:35px 25px;
+        }
+
+        p{
+            font-size:1rem;
+        }
+    }
+</style>
 </head>
 <body>
 
-  <div class="card">
-    <h1>🌙 Lunar Games</h1>
+<div class="container">
+    <h1>Final Goodbye...</h1>
 
     <p>
-      Sorry! Lunar Games is down for updates and stuff.
-      <br><br>
-      Idk why it’s down tbh, that’s what the developers told me
-      <span class="emoji">🤷‍♂️</span>
-      <br><br>
-      Sorry.
+        Lunar has been a fun project. Took me a while, developed a lot of skills,
+        and made me an overall better coder.
     </p>
 
-    <div class="footer">
-      Please check back later.
+    <p>
+        I enjoyed developing the site, and seeing the statistics of users.
+        It was over <span class="glow">6,000 daily visits.</span>
+    </p>
+
+    <p>
+        It’s the end of the year now, and with school ending soon I just don’t
+        have a reason or drive to work on it.
+    </p>
+
+    <p>
+        Maybe next year Lunar will come back...
+        <span class="glow">with some big changes.</span>
+    </p>
+
+    <p>
+        Thank you for everything. &lt;3
+    </p>
+
+    <div class="team">
+        <p><strong>Head of Development</strong><br>Frosts, New Braunfels TX</p>
+
+        <p><strong>Head of Game Porting</strong><br>Dino, Goliad TX</p>
+
+        <p><strong>Big thanks to the rest of the community.</strong></p>
     </div>
-  </div>
+
+    <div class="footer">
+        Lunar out. &lt;3
+    </div>
+</div>
+
+<script>
+    const snowCount = 120;
+
+    for(let i = 0; i < snowCount; i++){
+        const snow = document.createElement("div");
+        snow.classList.add("snow");
+
+        snow.style.left = Math.random() * window.innerWidth + "px";
+        snow.style.animationDuration = (Math.random() * 5 + 5) + "s";
+        snow.style.opacity = Math.random();
+        snow.style.transform = `scale(${Math.random() * 2})`;
+
+        document.body.appendChild(snow);
+    }
+</script>
 
 </body>
 </html>
