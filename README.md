@@ -10,6 +10,5 @@
 - Completely Custom Index.html
 - Smoother animations
 - Expadable
-- Ads 
 - More+
 ---
