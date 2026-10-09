@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,602 +5,392 @@
      crossorigin="anonymous"></script>
 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Lunar Launcher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>Classroom</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="lunar.png">
 
   <style>
     :root {
-      --primary: #a855f7;
-      --accent: #6366f1;
-      --tide: #38bdf8;
-      --bg-dark: #030005;
+      --bg: #08080c;
+      --text: #f4f4f7;
+      --muted: #8b8b99;
+      --line: rgba(255, 255, 255, 0.09);
+      --accent: #38bdf8;
+      --accent-2: #a855f7;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
 
     body {
       margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-family: 'Poppins', sans-serif;
-
+      font-family: 'Poppins', system-ui, sans-serif;
+      color: var(--text);
       background:
-        radial-gradient(
-          circle at center,
-          #0f001a 0%,
-          #030005 100%
-        );
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      min-height: 100vh;
-      color: white;
-    }
-
-    /* Background visuals */
-
-    .visuals {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .drop {
-      position: absolute;
-      width: 1px;
-      height: 40px;
-
-      background: linear-gradient(
-        to bottom,
-        transparent,
-        rgba(168, 85, 247, 0.4)
-      );
-
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(100vh);
-      }
-    }
-
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-
-      animation:
-        twinkle var(--d)
-        infinite ease-in-out;
-    }
-
-    @keyframes twinkle {
-      0%, 100% {
-        opacity: 0.2;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.8;
-        transform: scale(1.3);
-      }
-    }
-
-    /* Main card */
-
-    .container {
-      position: relative;
-      z-index: 10;
-
-      width: min(520px, 90vw);
-
-      text-align: center;
-
-      padding: 45px 40px;
-
-      background: rgba(255, 255, 255, 0.035);
-
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-
-      border: 1px solid rgba(255, 255, 255, 0.08);
-
-      border-radius: 40px;
-
-      box-shadow:
-        0 40px 100px rgba(0, 0, 0, 0.8);
-
-      transition: transform 0.3s ease;
-    }
-
-    .container:hover {
-      transform: scale(1.01);
-    }
-
-    .logo-main {
-      width: 115px;
-
-      filter:
-        drop-shadow(
-          0 0 20px
-          rgba(168, 85, 247, 0.4)
-        );
-
-      margin-bottom: 18px;
-
-      animation:
-        float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0) rotate(0deg);
-      }
-
-      50% {
-        transform: translateY(-12px) rotate(2deg);
-      }
-    }
-
-    h1 {
-      font-weight: 900;
-      font-size: 3.5rem;
-
-      margin: 0 0 8px 0;
-
-      letter-spacing: -2px;
-
-      background: linear-gradient(
-        135deg,
-        #fff 30%,
-        var(--primary) 100%
-      );
-
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-
-      line-height: 1;
-    }
-
-    .subtitle {
-      opacity: 0.5;
-
-      font-weight: 400;
-
-      margin: 0 0 30px 0;
-
-      letter-spacing: 1px;
-
-      text-transform: uppercase;
-
-      font-size: 0.75rem;
-    }
-
-    /* Launcher choices */
-
-    .launch-options {
+        radial-gradient(ellipse 60% 45% at 50% 0%, rgba(56, 189, 248, 0.10), transparent 70%),
+        var(--bg);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      padding: env(safe-area-inset-top, 0) 24px env(safe-area-inset-bottom, 0);
+      text-align: center;
     }
 
-    .launch-button {
-      width: 100%;
-
-      border: none;
-
-      padding: 18px 22px;
-
-      font-family: 'Poppins', sans-serif;
-
-      border-radius: 18px;
-
-      cursor: pointer;
-
-      transition: all 0.3s ease;
-
-      text-align: left;
-
-      position: relative;
-
-      overflow: hidden;
-    }
-
-    .launch-button:active {
-      transform: scale(0.97);
-    }
-
-    /* Tide button */
-
-    .tide-button {
-      background: linear-gradient(
-        135deg,
-        rgba(56, 189, 248, 0.2),
-        rgba(14, 165, 233, 0.08)
-      );
-
-      border: 1px solid
-        rgba(56, 189, 248, 0.35);
-
-      color: white;
-
-      box-shadow:
-        0 10px 30px
-        rgba(56, 189, 248, 0.08);
-    }
-
-    .tide-button:hover {
-      transform: translateY(-3px);
-
-      border-color:
-        rgba(56, 189, 248, 0.7);
-
-      background: linear-gradient(
-        135deg,
-        rgba(56, 189, 248, 0.3),
-        rgba(14, 165, 233, 0.12)
-      );
-
-      box-shadow:
-        0 15px 40px
-        rgba(56, 189, 248, 0.2);
-    }
-
-    /* Lunar button */
-
-    .lunar-button {
-      background:
-        rgba(255, 255, 255, 0.055);
-
-      border: 1px solid
-        rgba(168, 85, 247, 0.25);
-
-      color: white;
-    }
-
-    .lunar-button:hover {
-      transform: translateY(-3px);
-
-      border-color:
-        rgba(168, 85, 247, 0.6);
-
-      background:
-        rgba(168, 85, 247, 0.12);
-
-      box-shadow:
-        0 15px 40px
-        rgba(168, 85, 247, 0.2);
-    }
-
-    .button-title {
-      display: block;
-
-      font-size: 16px;
-
-      font-weight: 900;
-
-      letter-spacing: 0.3px;
-
-      margin-bottom: 3px;
-    }
-
-    .button-description {
-      display: block;
-
-      font-size: 11px;
-
-      font-weight: 400;
-
-      opacity: 0.55;
-
-      letter-spacing: 0.2px;
-    }
-
-    .new-badge {
-      position: absolute;
-
-      top: 10px;
-      right: 12px;
-
-      font-size: 9px;
-
-      font-weight: 900;
-
-      letter-spacing: 1px;
-
-      padding: 4px 8px;
-
-      border-radius: 20px;
-
-      background:
-        rgba(56, 189, 248, 0.15);
-
-      border: 1px solid
-        rgba(56, 189, 248, 0.35);
-
-      color: #7dd3fc;
-    }
-
-    /* Background watermark */
-
-    .bg-logo {
+    /* Background */
+    .bg {
       position: fixed;
-
-      width: 70vw;
-
-      opacity: 0.02;
-
-      z-index: 0;
-
-      top: 50%;
-      left: 50%;
-
-      transform:
-        translate(-50%, -50%);
-
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
       pointer-events: none;
     }
 
-    /* Accessibility */
+    .aurora {
+      position: absolute;
+      width: 55vmax;
+      height: 55vmax;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.28;
+      animation: drift 22s ease-in-out infinite alternate;
+    }
 
-    .launch-button:focus-visible {
-      outline: 2px solid #7dd3fc;
+    .aurora.a { background: #38bdf8; top: -25vmax; left: -15vmax; }
+    .aurora.b { background: #a855f7; bottom: -28vmax; right: -18vmax; animation-duration: 28s; animation-direction: alternate-reverse; }
+    .aurora.c { background: #6366f1; top: 30%; left: 40%; width: 35vmax; height: 35vmax; opacity: 0.16; animation-duration: 34s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(8vmax, 6vmax) scale(1.18); }
+    }
+
+    #net { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(8, 8, 12, 0.75) 100%);
+    }
+
+    footer { z-index: 1; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+
+    .brand img { width: 28px; height: 28px; border-radius: 8px; }
+
+    h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: clamp(2.4rem, 7vw, 4.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    h1 em {
+      display: block;
+      font-style: italic;
+      font-weight: 600;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lede {
+      margin: 18px 0 34px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: inline-flex;
+      gap: 6px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      margin-bottom: 26px;
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .tab {
+      position: relative;
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 18px;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .tab:hover { color: var(--text); }
+
+    .tab[aria-selected="true"] {
+      color: #05070a;
+      background: var(--text);
+    }
+
+    .badge {
+      margin-left: 8px;
+      padding: 2px 7px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 999px;
+      color: #05070a;
+      background: var(--accent);
+    }
+
+    .launch {
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #05070a;
+      background: var(--text);
+      border: 0;
+      border-radius: 14px;
+      padding: 15px 44px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .launch:hover { transform: translateY(-2px); box-shadow: 0 12px 34px rgba(56, 189, 248, 0.25); }
+    .launch:active { transform: scale(0.97); }
+
+    .hint {
+      margin: 16px 0 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      min-height: 1.2em;
+    }
+
+    kbd {
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 2px 7px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    footer {
+      position: fixed;
+      bottom: calc(18px + env(safe-area-inset-bottom, 0));
+      font-size: 0.75rem;
+      color: var(--muted);
+      opacity: 0.7;
+    }
+
+    .tab:focus-visible, .launch:focus-visible {
+      outline: 2px solid var(--accent);
       outline-offset: 3px;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .container,
-      .logo-main,
-      .launch-button {
-        transition: none;
-        animation: none;
-      }
-    }
-
-    /* Small screens */
-
-    @media (max-width: 500px) {
-      .container {
-        padding: 35px 25px;
-      }
-
-      h1 {
-        font-size: 3rem;
-      }
-
-      .logo-main {
-        width: 95px;
-      }
+      * { transition: none !important; }
     }
   </style>
+</head>
+<body>
+
+  <div class="bg" aria-hidden="true">
+    <div class="aurora a"></div>
+    <div class="aurora b"></div>
+    <div class="aurora c"></div>
+    <canvas id="net"></canvas>
+    <div class="vignette"></div>
+  </div>
+
+  <div class="brand">
+    <img src="lunar.png" alt="">
+    <span>Tide Inc</span>
+  </div>
+
+  <h1>Welcome To Tide Launcher.<em>Choice Any Of Our Sites</em></h1>
+  <p class="lede"></p>
+
+  <div class="tabs" role="tablist" aria-label="What to launch">
+    <button class="tab" role="tab" aria-selected="true"  data-target="tide">Tide</button>
+    <button class="tab" role="tab" aria-selected="false" data-target="lunar">Lunar</button>
+    <button class="tab" role="tab" aria-selected="false" data-target="bo1">Black Ops 1 Zombies<span class="badge">NEW!</span></button>
+  </div>
+
+  <div>
+    <button class="launch" id="launchBtn">Launch</button>
+  </div>
+  <p class="hint" id="hint"></p>
+
+  <footer>© Tide Inc · v2.0</footer>
 
   <script>
+    /* ---------- Destinations ---------- */
 
-    /* -------------------------
-       Open Lunar
-    ------------------------- */
+    // Put the address of your Black Ops 1 Zombies page here.
+    const BLACK_OPS_URL = "";
 
-    function openLunar() {
+    const TARGETS = {
+      tide:  { url: "https://mathmaticsandixl.vercel.app/", cloak: false, hint: "Opens the library in a new window" },
+      lunar: { url: "https://lunarr-os.vercel.app/app.html", cloak: true,  hint: "Opens the Lunar OS interface in a new window" },
+      bo1:   { url: BLACK_OPS_URL, cloak: false, hint: "Opens Black Ops 1 Zombies in a new window" }
+    };
 
+    let current = "tide";
+
+    /* ---------- Tabs ---------- */
+
+    const tabs = document.querySelectorAll(".tab");
+    const hint = document.getElementById("hint");
+
+    function renderHint() {
+      hint.innerHTML = TARGETS[current].hint + " · or press <kbd>Enter</kbd>";
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        current = tab.dataset.target;
+        tabs.forEach(t => t.setAttribute("aria-selected", String(t === tab)));
+        renderHint();
+      });
+    });
+
+    /* ---------- Launching ---------- */
+
+    function openCloaked(url) {
       const win = window.open();
+      if (!win) return false;
 
-      if (!win) {
-        alert(
-          "Pop-up blocked! Please allow pop-ups to launch Lunar."
-        );
+      win.document.title = "Lunar";
+      const b = win.document.body.style;
+      b.margin = "0";
+      b.height = "100vh";
+      b.overflow = "hidden";
+      b.background = "#030005";
 
+      const iframe = win.document.createElement("iframe");
+      iframe.style.cssText = "width:100%;height:100%;border:none";
+      iframe.src = url;
+      win.document.body.appendChild(iframe);
+      return true;
+    }
+
+    function launch() {
+      const t = TARGETS[current];
+
+      if (!t.url) {
+        hint.textContent = "This tab has no address yet. Set BLACK_OPS_URL in the page script.";
         return;
       }
 
-      const url =
-        "https://lunarr-os.vercel.app/app.html";
-
-      const iframe =
-        win.document.createElement("iframe");
-
-      win.document.title = "Lunar";
-
-      win.document.body.style.margin = "0";
-      win.document.body.style.padding = "0";
-      win.document.body.style.height = "100vh";
-      win.document.body.style.overflow = "hidden";
-      win.document.body.style.background = "#030005";
-
-      iframe.style.width = "100%";
-      iframe.style.height = "100%";
-      iframe.style.border = "none";
-
-      iframe.src = url;
-
-      win.document.body.appendChild(iframe);
+      const ok = t.cloak ? openCloaked(t.url) : !!window.open(t.url, "_blank");
+      if (!ok) alert("Pop-up blocked! Please allow pop-ups to launch.");
     }
 
+    document.getElementById("launchBtn").addEventListener("click", launch);
 
-    /* -------------------------
-       Open Tide
-    ------------------------- */
+    document.addEventListener("keydown", e => {
+      if (e.key === "Enter" && document.activeElement.tagName !== "BUTTON") launch();
+    });
 
-    function openTide() {
+    renderHint();
 
-      const win = window.open(
-        "https://mathmaticsandixl.vercel.app/",
-        "_blank"
-      );
+    /* ---------- Background: drifting particle network ---------- */
 
-      if (!win) {
-        alert(
-          "Pop-up blocked! Please allow pop-ups to launch Tide."
-        );
-      }
-    }
+    (function () {
+      const canvas = document.getElementById("net");
+      const ctx = canvas.getContext("2d");
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const mouse = { x: -9999, y: -9999 };
+      let w, h, dpr, pts = [];
 
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.clientWidth;
+        h = canvas.clientHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    /* -------------------------
-       Generate Background
-    ------------------------- */
-
-    window.onload = function() {
-
-      const visuals =
-        document.querySelector(".visuals");
-
-
-      /* Generate Stars */
-
-      for (let i = 0; i < 100; i++) {
-
-        const star =
-          document.createElement("div");
-
-        star.className = "star";
-
-        const size =
-          Math.random() * 2;
-
-        star.style.width =
-          size + "px";
-
-        star.style.height =
-          size + "px";
-
-        star.style.left =
-          Math.random() * 100 + "vw";
-
-        star.style.top =
-          Math.random() * 100 + "vh";
-
-        star.style.setProperty(
-          "--d",
-          (3 + Math.random() * 4) + "s"
-        );
-
-        visuals.appendChild(star);
+        const count = Math.min(90, Math.floor((w * h) / 14000));
+        pts = Array.from({ length: count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 1.4 + 0.6
+        }));
       }
 
+      function frame() {
+        ctx.clearRect(0, 0, w, h);
+        const link = 130;
 
-      /* Generate Rain */
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          if (!reduce) {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+          }
 
-      for (let i = 0; i < 60; i++) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(200, 225, 255, 0.7)";
+          ctx.fill();
 
-        const drop =
-          document.createElement("div");
+          for (let j = i + 1; j < pts.length; j++) {
+            const q = pts[j];
+            const d = Math.hypot(p.x - q.x, p.y - q.y);
+            if (d < link) {
+              ctx.strokeStyle = "rgba(125, 190, 255," + (0.16 * (1 - d / link)) + ")";
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(q.x, q.y);
+              ctx.stroke();
+            }
+          }
 
-        drop.className = "drop";
+          const md = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+          if (md < 160) {
+            ctx.strokeStyle = "rgba(168, 85, 247," + (0.35 * (1 - md / 160)) + ")";
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
 
-        drop.style.left =
-          Math.random() * 100 + "vw";
-
-        drop.style.top =
-          "-50px";
-
-        drop.style.animationDuration =
-          (0.7 + Math.random() * 0.5) + "s";
-
-        drop.style.animationDelay =
-          Math.random() * 2 + "s";
-
-        drop.style.opacity =
-          Math.random() * 0.5;
-
-        visuals.appendChild(drop);
+        if (!reduce) requestAnimationFrame(frame);
       }
 
-    };
+      window.addEventListener("resize", () => { resize(); if (reduce) frame(); });
+      window.addEventListener("mousemove", e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener("mouseleave", () => { mouse.x = mouse.y = -9999; });
 
+      resize();
+      frame();
+    })();
   </script>
-</head>
-
-<body>
-
-  <!-- Background Logo -->
-
-  <img
-    src="lunar.png"
-    class="bg-logo"
-    alt=""
-  >
-
-
-  <!-- Animated Background -->
-
-  <div class="visuals"></div>
-
-
-  <!-- Main Launcher -->
-
-  <div class="container">
-
-    <img
-      src="lunar.png"
-      class="logo-main"
-      alt="Lunar Logo"
-    >
-
-    <h1>Lunar</h1>
-
-    <p class="subtitle">
-      Secure OS Interface
-    </p>
-
-
-    <div class="launch-options">
-
-      <!-- TIDE -->
-
-      <button
-        class="launch-button tide-button"
-        onclick="openTide()"
-      >
-
-        <span class="new-badge">
-          NEW
-        </span>
-
-        <span class="button-title">
-          🌊 NEW TIDE!
-        </span>
-
-        <span class="button-description">
-          Launch Update Tide Site!
-        </span>
-
-      </button>
-
-
-      <!-- LUNAR -->
-
-      <button
-        class="launch-button lunar-button"
-        onclick="openLunar()"
-      >
-
-        <span class="button-title">
-          🌙 Launch Lunar
-        </span>
-
-        <span class="button-description">
-          Continue to the Lunar OS interface
-        </span>
-
-      </button>
-
-    </div>
-
-  </div>
-
 </body>
 </html>
-```
